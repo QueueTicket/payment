@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    database: mysql
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: true
+---
+spring:
+  config.activate.on-profile: test
+  jpa:
+    hibernate.ddl-auto: create-drop
+    properties:
+      hibernate:
+        generate_statistics: true
+---
+spring:
+  config.activate.on-profile: local
+  jpa:
+    hibernate.ddl-auto: update

@@ -1,0 +1,7 @@
+spring:
+  config:
+    import:
+      - classpath:properties/datasource.yml
+      - classpath:properties/jpa.yml
+  profiles:
+    active: local
