@@ -9,6 +9,7 @@ user.gradle
 target/
 build/
 out/
+!**/adapter/out
 
 *.DS_Store
 *.class
