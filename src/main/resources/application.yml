@@ -3,5 +3,6 @@ spring:
     import:
       - classpath:properties/datasource.yml
       - classpath:properties/jpa.yml
+      - classpath:properties/pg.yml
   profiles:
     active: local

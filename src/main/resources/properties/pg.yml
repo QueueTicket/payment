@@ -1,0 +1,4 @@
+pg:
+  toss:
+    secret-key:
+    endpoint: https://api.tosspayments.com
