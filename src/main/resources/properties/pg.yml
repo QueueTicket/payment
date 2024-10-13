@@ -1,4 +1,4 @@
 pg:
   toss:
-    secret-key:
+    secret-key: test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6
     endpoint: https://api.tosspayments.com
