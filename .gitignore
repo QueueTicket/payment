@@ -10,6 +10,7 @@ target/
 build/
 out/
 !**/adapter/out
+!**/port/out
 
 *.DS_Store
 *.class

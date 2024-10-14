@@ -44,6 +44,15 @@
   async function main() {
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("coupon-box");
+    
+    /*<![CDATA[*/
+    const orderId = "[[${orderId}]]"
+    const orderName = "[[${orderName}]]"
+    const targetAmount = "[[${amount}]]"
+    /*]]>*/
+
+    console.log(orderId, orderName, targetAmount)
+
     const amount = {
       currency: "KRW",
       value: 50000,

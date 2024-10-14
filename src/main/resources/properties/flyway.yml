@@ -1,0 +1,12 @@
+spring:
+  config.activate.on-profile: test, local
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+---
+spring:
+  config.activate.on-profile: dev
+  flyway:
+    enabled: false
+    baseline-on-migrate: false

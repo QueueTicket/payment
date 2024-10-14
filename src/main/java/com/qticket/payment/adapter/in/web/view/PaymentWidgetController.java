@@ -7,13 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Slf4j
 @Controller
 public class PaymentWidgetController {
-
-    @GetMapping
-    String checkoutPage() {
-        log.info("Checkout page");
-        return "widget/checkout";
-    }
-
+    
     @GetMapping("widget/success")
     String successPage() {
         log.info("success page");

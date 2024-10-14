@@ -1,8 +1,10 @@
 spring:
   config:
     import:
+      - classpath:properties/server.yml
       - classpath:properties/datasource.yml
       - classpath:properties/jpa.yml
+      - classpath:properties/flyway.yml
       - classpath:properties/pg.yml
   profiles:
     active: local
