@@ -2,6 +2,7 @@ plugins {
     java
     id("org.springframework.boot") version "3.3.4"
     id("io.spring.dependency-management") version "1.1.6"
+    id("com.google.cloud.tools.jib") version "3.2.0"
 }
 
 group = "com.qticket"
@@ -44,4 +45,17 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+jib {
+    from {
+        image = "openjdk:17-jdk-slim"
+    }
+    to {
+        image = "${project.name}:latest"
+    }
+    container {
+        mainClass = "com.qticket.payment.PaymentApplication"
+        creationTime = "USE_CURRENT_TIMESTAMP"
+    }
 }

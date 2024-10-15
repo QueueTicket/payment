@@ -1,0 +1,10 @@
+services:
+  qticket-payment-app:
+    image: payment:latest
+    container_name: payment-app
+    ports:
+      - "8080:8080"
+    environment:
+      - spring.datasource.url=jdbc:mysql://host.docker.internal:3306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
+      - spring.datasource.username=qticket
+      - spring.datasource.password=qticket
