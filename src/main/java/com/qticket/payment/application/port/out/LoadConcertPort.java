@@ -1,6 +1,6 @@
 package com.qticket.payment.application.port.out;
 
-import com.qticket.payment.domain.Concert;
+import com.qticket.payment.domain.checkout.Concert;
 
 public interface LoadConcertPort {
 

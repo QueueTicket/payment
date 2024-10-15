@@ -6,7 +6,8 @@ import java.util.UUID;
 public class IdempotencyGenerator {
 
     public static String generate(CheckoutRequest checkoutRequest) {
-        return UUID.nameUUIDFromBytes(checkoutRequest.toString().getBytes()).toString();
+//        return UUID.nameUUIDFromBytes(checkoutRequest.toString().getBytes()).toString();
+        return UUID.randomUUID().toString();
     }
 
 }

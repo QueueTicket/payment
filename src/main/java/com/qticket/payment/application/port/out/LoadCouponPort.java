@@ -1,6 +1,6 @@
 package com.qticket.payment.application.port.out;
 
-import com.qticket.payment.domain.Coupon;
+import com.qticket.payment.domain.checkout.Coupon;
 
 public interface LoadCouponPort {
 

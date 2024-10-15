@@ -44,19 +44,29 @@
   async function main() {
     const button = document.getElementById("payment-button");
     const coupon = document.getElementById("coupon-box");
-    
+
     /*<![CDATA[*/
     const orderId = "[[${orderId}]]"
     const orderName = "[[${orderName}]]"
     const targetAmount = "[[${amount}]]"
     /*]]>*/
 
-    console.log(orderId, orderName, targetAmount)
-
     const amount = {
       currency: "KRW",
-      value: 50000,
+      value: 45000,
     };
+
+    const amount2 = {
+      currency: "KRW",
+      value: parseInt(targetAmount),
+    };
+
+    console.log(orderId, orderName, amount, amount2)
+
+    // const amount = {
+    //   currency: "KRW",
+    //   value: targetAmount,
+    // };
     // ------  결제위젯 초기화 ------
     // TODO: clientKey는 개발자센터의 결제위젯 연동 키 > 클라이언트 키로 바꾸세요.
     // TODO: 구매자의 고유 아이디를 불러와서 customerKey로 설정하세요. 이메일・전화번호와 같이 유추가 가능한 값은 안전하지 않습니다.
@@ -76,7 +86,8 @@
     // TODO: 위젯의 결제금액을 결제하려는 금액으로 초기화하세요.
     // TODO: renderPaymentMethods, renderAgreement, requestPayment 보다 반드시 선행되어야 합니다.
     // @docs https://docs.tosspayments.com/sdk/v2/js#widgetssetamount
-    await widgets.setAmount(amount);
+    await widgets.setAmount(amount2);
+    // await widgets.setAmount(targetAmount);
 
     await Promise.all([
       // ------  결제 UI 렌더링 ------
@@ -120,8 +131,8 @@
       // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
       // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
       await widgets.requestPayment({
-        orderId: generateRandomString(),
-        orderName: "토스 티셔츠 외 2건",
+        orderId: orderId,
+        orderName: orderName,
         successUrl: window.location.origin + "/widget/success",
         failUrl: window.location.origin + "/fail",
         customerEmail: "customer123@gmail.com",

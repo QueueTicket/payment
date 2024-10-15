@@ -1,8 +1,8 @@
 package com.qticket.payment.domain.payment;
 
-import com.qticket.payment.adapter.out.persistnece.entity.PaymentOrderJpaEntity;
-import com.qticket.payment.domain.Concert;
-import com.qticket.payment.domain.Coupon;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
+import com.qticket.payment.domain.checkout.Concert;
+import com.qticket.payment.domain.checkout.Coupon;
 import java.math.BigDecimal;
 import java.util.List;
 

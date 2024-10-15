@@ -4,6 +4,6 @@ import com.qticket.payment.domain.payment.PaymentEvent;
 
 public interface PaymentRepository {
 
-    public void save(PaymentEvent paymentEvent);
+    void save(PaymentEvent paymentEvent);
 
 }

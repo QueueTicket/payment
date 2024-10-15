@@ -1,6 +1,6 @@
 package com.qticket.payment.application.port.out;
 
-import com.qticket.payment.domain.Customer;
+import com.qticket.payment.domain.checkout.Customer;
 
 public interface LoadCustomerPort {
 

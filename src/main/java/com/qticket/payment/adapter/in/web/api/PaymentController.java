@@ -1,7 +1,10 @@
 package com.qticket.payment.adapter.in.web.api;
 
 import com.qticket.payment.adapter.in.web.api.request.TossPaymentConfirmRequest;
-import com.qticket.payment.adapter.out.web.toss.TossPaymentExecutor;
+import com.qticket.payment.adapter.out.web.external.payment.toss.TossPaymentExecutor;
+import com.qticket.payment.application.port.in.PaymentConfirmUseCase;
+import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
+import com.qticket.payment.domain.confirm.PaymentConfirmResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +21,14 @@ import reactor.core.publisher.Mono;
 public class PaymentController {
 
     private final TossPaymentExecutor tossPaymentExecutor;
+    private final PaymentConfirmUseCase paymentConfirmUseCase;
 
     @PostMapping("/confirm/widget")
-    Mono<ResponseEntity<String>> confirm(@RequestBody TossPaymentConfirmRequest request) {
+    Mono<ResponseEntity<PaymentConfirmResult>> confirm(@RequestBody TossPaymentConfirmRequest request) {
         log.info("{}", request);
-        return tossPaymentExecutor.execute(request)
+        PaymentConfirmCommand command = request.toCommand();
+
+        return paymentConfirmUseCase.confirm(command)
             .map(it -> ResponseEntity.ok()
                 .body(it)
             );

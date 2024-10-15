@@ -1,15 +1,15 @@
 package com.qticket.payment.application.service;
 
-import com.qticket.payment.application.port.in.CheckoutCommand;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
+import com.qticket.payment.application.port.in.command.CheckoutCommand;
 import com.qticket.payment.application.port.out.LoadConcertPort;
 import com.qticket.payment.application.port.out.LoadCouponPort;
 import com.qticket.payment.application.port.out.LoadCustomerPort;
 import com.qticket.payment.application.port.out.SavePaymentPort;
-import com.qticket.payment.domain.CheckoutResult;
-import com.qticket.payment.domain.Concert;
-import com.qticket.payment.domain.Coupon;
-import com.qticket.payment.domain.Customer;
+import com.qticket.payment.domain.checkout.CheckoutResult;
+import com.qticket.payment.domain.checkout.Concert;
+import com.qticket.payment.domain.checkout.Coupon;
+import com.qticket.payment.domain.checkout.Customer;
 import com.qticket.payment.domain.payment.PaymentEvent;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
@@ -33,6 +33,7 @@ public class CheckoutService implements CheckoutUseCase {
         PaymentEvent paymentEvent = createPaymentEvent(command, customer, concert, coupon);
 
         savePaymentPort.save(paymentEvent);
+
         return CheckoutResult.of(paymentEvent);
     }
 

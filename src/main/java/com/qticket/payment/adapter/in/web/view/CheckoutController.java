@@ -2,7 +2,7 @@ package com.qticket.payment.adapter.in.web.view;
 
 import com.qticket.payment.adapter.in.web.view.request.CheckoutRequest;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
-import com.qticket.payment.domain.CheckoutResult;
+import com.qticket.payment.domain.checkout.CheckoutResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

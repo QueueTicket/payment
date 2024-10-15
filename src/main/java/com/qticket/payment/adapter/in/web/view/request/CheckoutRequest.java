@@ -1,6 +1,6 @@
 package com.qticket.payment.adapter.in.web.view.request;
 
-import com.qticket.payment.application.port.in.CheckoutCommand;
+import com.qticket.payment.application.port.in.command.CheckoutCommand;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.utils.IdempotencyGenerator;
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.qticket.payment.domain.payment;
 
-import com.qticket.payment.adapter.out.persistnece.entity.PaymentEventJpaEntity;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaEntity;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
