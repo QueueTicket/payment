@@ -4,12 +4,10 @@ import com.qticket.payment.adapter.in.web.view.request.CheckoutRequest;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
 import com.qticket.payment.domain.checkout.CheckoutResult;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CheckoutController {
@@ -18,7 +16,6 @@ public class CheckoutController {
 
     @GetMapping
     String checkoutPage(CheckoutRequest request, Model model) {
-        log.info("{}", request);
         CheckoutResult result = checkoutUseCase.checkout(request.toCommand());
 
         model.addAttribute("orderId", result.orderId());

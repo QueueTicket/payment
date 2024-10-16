@@ -25,7 +25,15 @@ public class CheckoutService implements CheckoutUseCase {
     private final LoadConcertPort loadConcertPort;
     private final SavePaymentPort savePaymentPort;
 
-    // TODO 쿠폰 할인 금액 적용
+    /**
+     * TODO 쿠폰 할인 금액 적용
+     * <p>
+     * - maxDiscountAmount는 discountAmount보다 클 수 없음
+     * - DiscountPolicy에 따라서 할인 금액/할인률을 구분
+     *
+     * @param command
+     * @return
+     */
     @Override
     public CheckoutResult checkout(CheckoutCommand command) {
         CustomerResponse customer = loadCustomerPort.getCustomer(command.customerId());
