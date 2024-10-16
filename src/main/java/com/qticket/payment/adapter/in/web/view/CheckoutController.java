@@ -18,6 +18,7 @@ public class CheckoutController {
 
     @GetMapping
     String checkoutPage(CheckoutRequest request, Model model) {
+        log.info("{}", request);
         CheckoutResult result = checkoutUseCase.checkout(request.toCommand());
 
         model.addAttribute("orderId", result.orderId());

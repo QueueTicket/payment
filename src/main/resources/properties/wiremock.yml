@@ -1,0 +1,4 @@
+wiremock:
+  base:
+    url:
+---

@@ -1,0 +1,7 @@
+internal:
+  instance:
+    name:
+      customer: auth-server
+      coupon: coupon-server
+      concert: concert-server
+---

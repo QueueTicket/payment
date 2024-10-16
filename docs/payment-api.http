@@ -1,0 +1,5 @@
+# @name 결제 요청
+GET http://localhost:8080/?customerId=1&couponId=coupon-id&concertId=ticket-id&seatIds=1,2&paymentMethod=EASY_PAY
+Content-Type: application/json
+
+###

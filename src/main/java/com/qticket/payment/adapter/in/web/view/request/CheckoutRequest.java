@@ -7,18 +7,18 @@ import java.util.List;
 
 public record CheckoutRequest(
     Long customerId,
+    String couponId,
     String concertId,
     List<String> seatIds,
-    PaymentMethod paymentMethod,
-    String couponId
+    PaymentMethod paymentMethod
 ) {
 
     public CheckoutCommand toCommand() {
         return new CheckoutCommand(
             customerId,
+            couponId,
             concertId,
             seatIds,
-            couponId,
             paymentMethod,
             IdempotencyGenerator.generate(this)
         );

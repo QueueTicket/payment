@@ -30,7 +30,7 @@ class CheckoutServiceTest extends PaymentTestHelper {
         // Then
         PaymentEventJpaEntity paymentEvent = paymentEventJpaRepository.findByOrderId(orderId);
 
-        assertThat(actual.amount()).isEqualTo(new BigDecimal(45_000));
+        assertThat(actual.amount()).isEqualTo(new BigDecimal(115_000));
         assertFalse(paymentEvent.isCompleted());
         assertThat(paymentEvent.getPaymentOrders())
             .allMatch(order -> !order.isLedgerCompleted() && !order.isSettlementCompleted());

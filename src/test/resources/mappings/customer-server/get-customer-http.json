@@ -1,0 +1,20 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/user/1"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": {
+      "id": 1,
+      "email": "test@gmail.com",
+      "name": "홍길동",
+      "phoneNumber": "010-2223-4445",
+      "userRole": "CUSTOMER",
+      "birtDate": "2024-10-16T15:30:00"
+    }
+  }
+}

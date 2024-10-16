@@ -5,9 +5,9 @@ import java.util.List;
 
 public record CheckoutCommand(
     Long customerId,
+    String couponId,
     String concertId,
     List<String> seatIds,
-    String couponId,
     PaymentMethod paymentMethod,
     String idempotencyKey
 ) {

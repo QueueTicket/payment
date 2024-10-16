@@ -1,0 +1,10 @@
+---
+spring:
+  config.activate.on-profile: dev
+feature:
+  toggle:
+    use:
+      internal:
+        customer-app: true
+        coupon-app: true
+        concert-app: true

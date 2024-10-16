@@ -66,6 +66,7 @@ public class PaymentOrderJpaEntity {
         String seatId,
         BigDecimal amount
     ) {
+
         return new PaymentOrderJpaEntity(orderId, couponId, concertId, seatId, amount);
     }
 

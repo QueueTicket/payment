@@ -1,0 +1,60 @@
+{
+  "request": {
+    "method": "POST",
+    "urlPath": "/v1/payments/confirm"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json",
+      "idempotency-Key": "idempotency-Key"
+    },
+    "status": 200,
+    "jsonBody": {
+      "mId": "tgen_docs",
+      "lastTransactionKey": "03E8176A9CDD99F51A800A508A75C0DA",
+      "paymentKey": "tgen_20241015223814VG7P3",
+      "orderId": "6aa3ba10-1499-43a0-817d-e13f7a93b274",
+      "orderName": "[R:B:10]",
+      "taxExemptionAmount": 0,
+      "status": "DONE",
+      "requestedAt": "2024-10-15T22:38:14+09:00",
+      "approvedAt": "2024-10-15T22:38:43+09:00",
+      "useEscrow": false,
+      "cultureExpense": false,
+      "card": null,
+      "virtualAccount": null,
+      "transfer": null,
+      "mobilePhone": null,
+      "giftCertificate": null,
+      "cashReceipt": null,
+      "cashReceipts": null,
+      "discount": null,
+      "cancels": null,
+      "secret": "ps_jExPeJWYVQqjXJGJ2kBQV49R5gvN",
+      "type": "NORMAL",
+      "easyPay": {
+        "provider": "토스페이",
+        "amount": 115000,
+        "discountAmount": 0
+      },
+      "country": "KR",
+      "failure": null,
+      "isPartialCancelable": true,
+      "receipt": {
+        "url": "https://dashboard.tosspayments.com/receipt/redirection?transactionId=tgen_20241015223814VG7P3&ref=PX"
+      },
+      "checkout": {
+        "url": "https://api.tosspayments.com/v1/payments/tgen_20241015223814VG7P3/checkout"
+      },
+      "currency": "KRW",
+      "totalAmount": 115000,
+      "balanceAmount": 115000,
+      "suppliedAmount": 104545,
+      "vat": 10455,
+      "taxFreeAmount": 0,
+      "method": "간편결제",
+      "version": "2022-11-16",
+      "metadata": null
+    }
+  }
+}

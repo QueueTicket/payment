@@ -6,5 +6,10 @@ spring:
       - classpath:properties/jpa.yml
       - classpath:properties/flyway.yml
       - classpath:properties/pg.yml
+      - classpath:properties/eureka.yml
+      - classpath:properties/feign.yml
+      - classpath:properties/microservice-registry.yml
+      - classpath:properties/wiremock.yml
+      - classpath:properties/feature-flag.yml
   profiles:
     active: local
