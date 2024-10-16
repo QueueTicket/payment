@@ -1,6 +1,6 @@
 package com.qticket.payment.application.port.out.command;
 
-import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
+import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.Failure;
 import com.qticket.payment.application.port.out.command.exception.InValidPaymentStatusException;
 import com.qticket.payment.application.port.out.command.exception.MissingConfirmCompleteDetailsException;
 import com.qticket.payment.domain.confirm.PaymentExecutionResult;

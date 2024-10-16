@@ -9,7 +9,7 @@ import com.qticket.payment.application.port.out.LoadCouponPort;
 import com.qticket.payment.application.port.out.LoadCustomerPort;
 import com.qticket.payment.application.port.out.SavePaymentPort;
 import com.qticket.payment.domain.checkout.CheckoutResult;
-import com.qticket.payment.domain.checkout.Ticket;
+import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.payment.PaymentEvent;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
@@ -25,12 +25,13 @@ public class CheckoutService implements CheckoutUseCase {
     private final LoadConcertPort loadConcertPort;
     private final SavePaymentPort savePaymentPort;
 
+    // TODO 쿠폰 할인 금액 적용
     @Override
     public CheckoutResult checkout(CheckoutCommand command) {
         CustomerResponse customer = loadCustomerPort.getCustomer(command.customerId());
-        Ticket ticket = loadConcertPort.getTicket(command.concertId());
-        CouponValidateResponse coupon = loadCouponPort.getCoupon(command.couponId(), ticket);
-        PaymentEvent paymentEvent = createPaymentEvent(command, customer, ticket, coupon);
+        Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
+        CouponValidateResponse coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
+        PaymentEvent paymentEvent = createPaymentEvent(command, customer, reservation, coupon);
 
         savePaymentPort.save(paymentEvent);
 
@@ -40,17 +41,17 @@ public class CheckoutService implements CheckoutUseCase {
     private PaymentEvent createPaymentEvent(
         CheckoutCommand command,
         CustomerResponse customer,
-        Ticket ticket,
+        Reservation reservation,
         CouponValidateResponse coupon
     ) {
         return PaymentEvent.of(
             customer.id(),
             command.idempotencyKey(),
-            ticket.seatNames(),
+            reservation.seatNames(),
             PaymentMethod.EASY_PAY,
             PaymentOrder.preOrder(
                 command.idempotencyKey(),
-                ticket,
+                reservation,
                 coupon
             )
         );

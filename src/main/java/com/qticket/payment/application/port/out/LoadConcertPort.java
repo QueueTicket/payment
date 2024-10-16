@@ -1,9 +1,9 @@
 package com.qticket.payment.application.port.out;
 
-import com.qticket.payment.domain.checkout.Ticket;
+import com.qticket.payment.domain.checkout.Reservation;
 
 public interface LoadConcertPort {
 
-    Ticket getTicket(String concertId);
+    Reservation getTicket(Long customerId, String concertId);
 
 }
