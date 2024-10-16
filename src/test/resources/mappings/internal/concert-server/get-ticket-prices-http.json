@@ -1,0 +1,29 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/concerts/prices"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": [
+      {
+        "priceId": "a1b2c3d4-e5f6-7890-ab12-cd34567890ef",
+        "price": "45000",
+        "seatGrade": "R"
+      },
+      {
+        "priceId": "a1b2c3d4-e5f6-7890-ab12-cd34567890ef",
+        "price": "40000",
+        "seatGrade": "S"
+      },
+      {
+        "priceId": "a1b2c3d4-e5f6-7890-ab12-cd34567890ef",
+        "price": "35000",
+        "seatGrade": "A"
+      }
+    ]
+  }
+}

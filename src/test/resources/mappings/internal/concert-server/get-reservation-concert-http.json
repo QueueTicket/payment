@@ -1,0 +1,32 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPath": "/concert-seats/concert/concert-id"
+  },
+  "response": {
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "status": 200,
+    "jsonBody": [
+      {
+        "concertSeatId": "a1b2c3d4-e5f6-7890-ab12-cd34567890ef",
+        "seatId": "b2c3d4e5-f6a7-8910-bc12-de34567891fa",
+        "priceId": "P001",
+        "status": "RESERVED"
+      },
+      {
+        "concertSeatId": "f1e2d3c4-b5a6-7890-ba12-dc34567890ab",
+        "seatId": "c2d3e4f5-a6b7-8910-db12-ce34567892fb",
+        "priceId": "P002",
+        "status": "PAYING"
+      },
+      {
+        "concertSeatId": "e1d2c3b4-f5a6-7890-ca12-bd34567890cd",
+        "seatId": "d2e3f4f5-b6a7-8910-eb12-af34567893ec",
+        "priceId": "P003",
+        "status": "AVAILABLE"
+      }
+    ]
+  }
+}

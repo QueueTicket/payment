@@ -1,8 +1,9 @@
 package com.qticket.payment.base;
 
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 public class SpringBootTestBase extends TestBase {
 
 }

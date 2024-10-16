@@ -26,8 +26,8 @@ public class PaymentTestHelper extends SpringBootTestBase {
 
     protected final CheckoutCommand checkoutCommand = new CheckoutCommand(
         1L,
-        "coupon-id",
-        "consert-id",
+        "coupon-concertId",
+        "consert-concertId",
         List.of("seat-a"),
         PaymentMethod.EASY_PAY,
         orderId
