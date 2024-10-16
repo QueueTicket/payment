@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "${internal.instance.name.concert}", url = "${wiremock.base.url}")
 public interface ConcertAppClient {
 
-    @GetMapping("/concert-seats/concnert/{concertId}")
-    List<ConcertSeatResponse> getTicket(@PathVariable String concertId);
+    @GetMapping("/concert-seats/concert/{concertId}")
+    List<ConcertSeatResponse> getReservedConcertSeats(@PathVariable String concertId);
 
     @GetMapping("/concerts/prices")
-    List<PriceResponse> getTicketPrice(@RequestParam List<String> pricesId);
+    List<PriceResponse> getTicketPrices(@RequestParam List<String> pricesId);
 
 }

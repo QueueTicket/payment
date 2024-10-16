@@ -1,9 +1,9 @@
 package com.qticket.payment.adapter.out.web.internal.concert.client;
 
-import com.qticket.payment.domain.checkout.Ticket;
+import com.qticket.payment.domain.checkout.Reservation;
 
 public interface ConcertMockClient {
 
-    Ticket getTicket(String concertId);
+    Reservation getTicket(Long customerId, String concertId);
 
 }

@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CustomerWebAdapter implements LoadCustomerPort {
 
-    @Value("${feature.toggle.use.internal.customer-app:false}")
-    private boolean useInternalClient;
-
     private final CustomerAppClient customerAppClient;
     private final CustomerMockClient customerMockClient;
+
+    @Value("${feature.toggle.use.internal.customer-app:false}")
+    private boolean useInternalClient;
 
     @Override
     public CustomerResponse getCustomer(Long customerId) {

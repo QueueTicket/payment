@@ -5,11 +5,8 @@ import com.qticket.payment.adapter.out.web.internal.concert.client.ConcertMockCl
 import com.qticket.payment.adapter.out.web.internal.concert.client.response.ConcertSeatResponse;
 import com.qticket.payment.adapter.out.web.internal.concert.client.response.PriceResponse;
 import com.qticket.payment.application.port.out.LoadConcertPort;
-import com.qticket.payment.domain.checkout.ConcertSeat;
-import com.qticket.payment.domain.checkout.Ticket;
-import java.math.BigDecimal;
+import com.qticket.payment.domain.checkout.Reservation;
 import java.util.List;
-import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,34 +15,27 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ConcertWebAdapter implements LoadConcertPort {
 
-    @Value("${feature.toggle.use.internal.concert-app:false}")
-    private boolean useInternalClient;
-
     private final ConcertAppClient concertAppClient;
     private final ConcertMockClient concertMockClient;
 
-    @Override
-    public Ticket getTicket(String concertId) {
-        if (useInternalClient) {
-            List<ConcertSeatResponse> ticket = concertAppClient.getTicket(concertId);
-            List<String> pricesIds = ticket.stream().map(ConcertSeatResponse::priceId).toList();
-            List<PriceResponse> ticketPrices = concertAppClient.getTicketPrice(pricesIds);
+    @Value("${feature.toggle.use.internal.concert-app:false}")
+    private boolean useInternalClient;
 
-            ConcertSeat concertSeat = new ConcertSeat(
-                UUID.randomUUID().toString(),
-                "R",
-                "B",
-                "10",
-                new BigDecimal(115_000)
-            );
-            return new Ticket(
-                1L,
-                UUID.randomUUID().toString(),
-                "아이유 콘서트",
-                List.of(concertSeat)
-            );
+    @Override
+    public Reservation getTicket(Long customerId, String concertId) {
+        if (useInternalClient) {
+            List<ConcertSeatResponse> reservationSeat = concertAppClient.getReservedConcertSeats(concertId);
+            List<String> pricesIds = extractPriceIds(reservationSeat);
+            List<PriceResponse> ticketPrices = concertAppClient.getTicketPrices(pricesIds);
+
+            return Reservation.of(customerId, concertId, reservationSeat, ticketPrices);
         }
-        return concertMockClient.getTicket(concertId);
+        return concertMockClient.getTicket(customerId, concertId);
+    }
+
+    private List<String> extractPriceIds(List<ConcertSeatResponse> reservationSeat) {
+        return reservationSeat.stream()
+            .map(ConcertSeatResponse::priceId).toList();
     }
 
 }

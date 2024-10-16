@@ -4,7 +4,7 @@ import com.qticket.payment.adapter.out.web.internal.coupon.client.CouponAppClien
 import com.qticket.payment.adapter.out.web.internal.coupon.client.CouponMockClient;
 import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
 import com.qticket.payment.application.port.out.LoadCouponPort;
-import com.qticket.payment.domain.checkout.Ticket;
+import com.qticket.payment.domain.checkout.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -13,23 +13,23 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CouponWebAdapter implements LoadCouponPort {
 
-    @Value("${feature.toggle.use.internal.coupon-app:false}")
-    private boolean useInternalClient;
-
     private final CouponAppClient couponAppClient;
     private final CouponMockClient couponMockClient;
 
+    @Value("${feature.toggle.use.internal.coupon-app:false}")
+    private boolean useInternalClient;
+
     @Override
-    public CouponValidateResponse getCoupon(String couponId, Ticket ticket) {
+    public CouponValidateResponse getCoupon(String couponId, Reservation reservation) {
         if (useInternalClient) {
             return couponAppClient.validateCoupon(
-                ticket.userId(),
+                reservation.customerId(),
                 couponId,
-                ticket.id(),
-                ticket.totalPrice()
+                reservation.concertId(),
+                reservation.totalPrice().longValueExact()
             );
         }
-        return couponMockClient.validateCoupon(couponId, ticket);
+        return couponMockClient.validateCoupon(couponId, reservation);
     }
 
 }
