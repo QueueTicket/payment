@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.web.external.payment.toss.config.client.toss;
+package com.qticket.payment.adapter.out.web.external.payment.toss.config.client;
 
 import java.time.Duration;
 import org.springframework.context.annotation.Bean;
@@ -13,10 +13,10 @@ public class PaymentAssignConnectionPool {
     @Bean
     public ConnectionProvider paymentAssignConnectionProvider() {
         return ConnectionProvider.builder(PAYMENT_ASSIGN_CLIENT_POOL)
-            .maxConnections(200) // 최대 커넥션 수
-            .pendingAcquireTimeout(Duration.ofMillis(5000)) // 커넥션 풀에서 기다리는 시간
-            .pendingAcquireMaxCount(-1) // 대기 중인 요청에 제한 없음
-            .maxIdleTime(Duration.ofSeconds(30)) // 커넥션의 최대 유휴 시간
+            .maxConnections(200)
+            .pendingAcquireTimeout(Duration.ofMillis(5000))
+            .pendingAcquireMaxCount(-1)
+            .maxIdleTime(Duration.ofSeconds(30))
             .build();
     }
 

@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.web.external.payment.toss.config.client.toss;
+package com.qticket.payment.adapter.out.web.external.payment.toss.config.client;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

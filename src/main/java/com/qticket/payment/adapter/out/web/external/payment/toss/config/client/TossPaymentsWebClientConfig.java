@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.web.external.payment.toss.config.client.toss;
+package com.qticket.payment.adapter.out.web.external.payment.toss.config.client;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
