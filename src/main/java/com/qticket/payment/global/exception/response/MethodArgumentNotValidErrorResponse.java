@@ -15,14 +15,13 @@ public final class MethodArgumentNotValidErrorResponse extends ApplicationErrorR
 
     private MethodArgumentNotValidErrorResponse(
         HttpServletRequest request,
-        GlobalErrorCode errorCode,
         InvalidDetails invalidDetails
     ) {
         super(
             request.getMethod(),
             request.getRequestURI(),
-            errorCode.name(),
-            errorCode.getMessage(),
+            GlobalErrorCode.METHOD_ARGUMENT_NOT_VALID.name(),
+            GlobalErrorCode.METHOD_ARGUMENT_NOT_VALID.getMessage(),
             LocalDateTime.now()
         );
         this.invalidDetails = invalidDetails;
@@ -30,12 +29,10 @@ public final class MethodArgumentNotValidErrorResponse extends ApplicationErrorR
 
     public static MethodArgumentNotValidErrorResponse of(
         HttpServletRequest request,
-        GlobalErrorCode globalErrorCode,
         List<FieldError> fieldErrors
     ) {
         return new MethodArgumentNotValidErrorResponse(
             request,
-            globalErrorCode,
             InvalidDetails.from(fieldErrors)
         );
     }
