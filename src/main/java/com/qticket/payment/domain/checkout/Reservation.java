@@ -19,15 +19,15 @@ public record Reservation(
     public List<ConcertSeat> concertSeats() {
         return tickets.concertSeats();
     }
-    
+
     public static Reservation of(
-        Long userId,
+        Long customerId,
         String concertId,
         List<ConcertSeatResponse> reservationSeats,
         List<PriceResponse> ticketPrices
     ) {
         Tickets tickets = createTickets(reservationSeats, ticketPrices);
-        return new Reservation(userId, concertId, tickets, tickets.totalPrice());
+        return new Reservation(customerId, concertId, tickets, tickets.totalPrice());
     }
 
     private static Tickets createTickets(
