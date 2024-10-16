@@ -2,7 +2,7 @@ package com.qticket.payment.domain.payment;
 
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
 import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
-import com.qticket.payment.domain.checkout.Ticket;
+import com.qticket.payment.domain.checkout.Reservation;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -12,9 +12,9 @@ public record PaymentOrder(
     Long paymentEventId,
     Long customerId,
     String orderId,
-    String couponId,
     String concertId,
     String seatId,
+    String couponId,
     BigDecimal amount,
     PaymentStatus status,
     boolean isLedgerCompleted,
@@ -23,9 +23,9 @@ public record PaymentOrder(
 
     private PaymentOrder(
         String orderId,
-        String couponId,
         String concertId,
         String seatId,
+        String couponId,
         BigDecimal amount
     ) {
         this(
@@ -33,9 +33,9 @@ public record PaymentOrder(
             0L,
             0L,
             orderId,
-            couponId,
             concertId,
             seatId,
+            couponId,
             amount,
             PaymentStatus.PENDING,
             false,
@@ -45,27 +45,27 @@ public record PaymentOrder(
 
     public static List<PaymentOrder> preOrder(
         String orderId,
-        Ticket ticket,
+        Reservation reservation,
         CouponValidateResponse coupon
     ) {
-        return ticket.concertSeats()
+        return reservation.concertSeats()
             .stream()
-            .map(it -> of(orderId, coupon.id(), ticket.id(), it.id(), it.price()))
+            .map(it -> of(orderId, reservation.concertId(), it.id(), coupon.id(), it.price()))
             .toList();
     }
 
     public static PaymentOrder of(
         String orderId,
-        String couponId,
         String concertId,
         String seatId,
+        String couponId,
         BigDecimal amount
     ) {
         return new PaymentOrder(
             orderId,
-            couponId,
             concertId,
             seatId,
+            couponId,
             amount
         );
     }
@@ -73,9 +73,9 @@ public record PaymentOrder(
     public PaymentOrderJpaEntity toEntity() {
         return PaymentOrderJpaEntity.of(
             orderId,
-            couponId,
             concertId,
             seatId,
+            couponId,
             amount
         );
     }

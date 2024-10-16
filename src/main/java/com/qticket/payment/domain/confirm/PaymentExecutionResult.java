@@ -1,7 +1,7 @@
 package com.qticket.payment.domain.confirm;
 
-import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
-import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.TossPaymentConfirmResponse;
+import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.Failure;
+import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.TossPaymentConfirmResponse;
 import com.qticket.payment.domain.confirm.exception.NotValidConfirmedStatusException;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentStatus;
@@ -37,12 +37,6 @@ public class PaymentExecutionResult {
         validateStatus();
     }
 
-    private void validateStatus() {
-        if (!confirmStatus.isValidConfirmCompletedStatus()) {
-            throw new NotValidConfirmedStatusException(paymentKey, orderId, confirmStatus);
-        }
-    }
-
     public static PaymentExecutionResult from(TossPaymentConfirmResponse response) {
         return new PaymentExecutionResult(
             response.paymentKey(),
@@ -72,6 +66,12 @@ public class PaymentExecutionResult {
             approveDetails,
             failure
         );
+    }
+
+    private void validateStatus() {
+        if (!confirmStatus.isValidConfirmCompletedStatus()) {
+            throw new NotValidConfirmedStatusException(paymentKey, orderId, confirmStatus);
+        }
     }
 
     public PaymentStatus getpaymentStatus() {
