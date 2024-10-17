@@ -1,7 +1,5 @@
 package com.qticket.payment.application.service;
 
-import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
-import com.qticket.payment.adapter.out.web.internal.customer.client.response.CustomerResponse;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
 import com.qticket.payment.application.port.in.command.CheckoutCommand;
 import com.qticket.payment.application.port.out.LoadConcertPort;
@@ -9,6 +7,8 @@ import com.qticket.payment.application.port.out.LoadCouponPort;
 import com.qticket.payment.application.port.out.LoadCustomerPort;
 import com.qticket.payment.application.port.out.SavePaymentPort;
 import com.qticket.payment.domain.checkout.CheckoutResult;
+import com.qticket.payment.domain.checkout.Coupon;
+import com.qticket.payment.domain.checkout.Customer;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.payment.PaymentEvent;
 import com.qticket.payment.domain.payment.PaymentMethod;
@@ -36,9 +36,9 @@ public class CheckoutService implements CheckoutUseCase {
      */
     @Override
     public CheckoutResult checkout(CheckoutCommand command) {
-        CustomerResponse customer = loadCustomerPort.getCustomer(command.customerId());
+        Customer customer = loadCustomerPort.getCustomer(command.customerId());
         Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
-        CouponValidateResponse coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
+        Coupon coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
         PaymentEvent paymentEvent = createPaymentEvent(command, customer, reservation, coupon);
 
         savePaymentPort.save(paymentEvent);
@@ -48,9 +48,9 @@ public class CheckoutService implements CheckoutUseCase {
 
     private PaymentEvent createPaymentEvent(
         CheckoutCommand command,
-        CustomerResponse customer,
+        Customer customer,
         Reservation reservation,
-        CouponValidateResponse coupon
+        Coupon coupon
     ) {
         return PaymentEvent.of(
             customer.id(),

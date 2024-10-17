@@ -1,7 +1,7 @@
 package com.qticket.payment.domain.payment;
 
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
-import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
+import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.checkout.Reservation;
 import java.math.BigDecimal;
 import java.util.List;
@@ -46,7 +46,7 @@ public record PaymentOrder(
     public static List<PaymentOrder> preOrder(
         String orderId,
         Reservation reservation,
-        CouponValidateResponse coupon
+        Coupon coupon
     ) {
         return reservation.concertSeats()
             .stream()

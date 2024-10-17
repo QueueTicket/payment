@@ -1,9 +1,9 @@
 package com.qticket.payment.application.port.out;
 
-import com.qticket.payment.adapter.out.web.internal.customer.client.response.CustomerResponse;
+import com.qticket.payment.domain.checkout.Customer;
 
 public interface LoadCustomerPort {
 
-    CustomerResponse getCustomer(Long customerId);
+    Customer getCustomer(Long customerId);
 
 }

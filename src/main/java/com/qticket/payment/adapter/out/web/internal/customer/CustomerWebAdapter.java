@@ -2,8 +2,8 @@ package com.qticket.payment.adapter.out.web.internal.customer;
 
 import com.qticket.payment.adapter.out.web.internal.customer.client.CustomerAppClient;
 import com.qticket.payment.adapter.out.web.internal.customer.client.CustomerMockClient;
-import com.qticket.payment.adapter.out.web.internal.customer.client.response.CustomerResponse;
 import com.qticket.payment.application.port.out.LoadCustomerPort;
+import com.qticket.payment.domain.checkout.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -19,11 +19,11 @@ public class CustomerWebAdapter implements LoadCustomerPort {
     private boolean useInternalClient;
 
     @Override
-    public CustomerResponse getCustomer(Long customerId) {
+    public Customer getCustomer(Long customerId) {
         if (useInternalClient) {
-            return customerAppClient.getCustomer(customerId);
+            return Customer.of(customerAppClient.getCustomer(customerId));
         }
-        return customerMockClient.getCustomer(customerId);
+        return Customer.of(customerMockClient.getCustomer(customerId));
     }
 
 }
