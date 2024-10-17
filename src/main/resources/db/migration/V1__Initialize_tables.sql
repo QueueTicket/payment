@@ -8,7 +8,7 @@ CREATE TABLE payment_event
     payment_key  VARCHAR(255) UNIQUE,
     is_completed BOOLEAN                             NOT NULL DEFAULT FALSE,
     approved_at  DATETIME,
-    fail_count   INT                                 NOT NULL DEFAULT 0,
+    fail_count   INT                                 NOT NULL DEFAULT 0
 ) engine = InnoDB;
 
 CREATE TABLE payment_order
