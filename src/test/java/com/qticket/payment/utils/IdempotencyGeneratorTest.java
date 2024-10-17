@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import com.qticket.payment.adapter.in.web.view.request.CheckoutRequest;
 import com.qticket.payment.domain.payment.PaymentMethod;
+import com.qticket.payment.global.utils.IdempotencyGenerator;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

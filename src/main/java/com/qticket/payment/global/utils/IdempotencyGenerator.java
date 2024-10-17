@@ -1,4 +1,4 @@
-package com.qticket.payment.utils;
+package com.qticket.payment.global.utils;
 
 import com.qticket.payment.adapter.in.web.view.request.CheckoutRequest;
 import java.util.UUID;
