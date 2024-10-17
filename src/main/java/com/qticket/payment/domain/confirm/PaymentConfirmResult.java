@@ -1,8 +1,8 @@
 package com.qticket.payment.domain.confirm;
 
 import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.Failure;
-import com.qticket.payment.application.port.out.command.exception.InValidPaymentStatusException;
 import com.qticket.payment.domain.payment.PaymentStatus;
+import com.qticket.payment.exception.application.InValidPaymentStatusException;
 
 public record PaymentConfirmResult(
     PaymentStatus paymentStatus,

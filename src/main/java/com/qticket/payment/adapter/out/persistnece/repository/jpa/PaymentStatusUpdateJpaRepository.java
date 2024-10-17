@@ -7,8 +7,8 @@ import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.Payment
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderHistoryJpaRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
 import com.qticket.payment.application.port.out.command.PaymentStatusUpdateCommand;
-import com.qticket.payment.application.port.out.command.exception.InValidPaymentStatusException;
 import com.qticket.payment.domain.payment.PaymentStatus;
+import com.qticket.payment.exception.application.InValidPaymentStatusException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

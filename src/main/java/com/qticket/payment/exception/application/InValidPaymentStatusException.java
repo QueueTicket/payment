@@ -1,4 +1,4 @@
-package com.qticket.payment.application.port.out.command.exception;
+package com.qticket.payment.exception.application;
 
 import com.qticket.payment.domain.payment.PaymentStatus;
 

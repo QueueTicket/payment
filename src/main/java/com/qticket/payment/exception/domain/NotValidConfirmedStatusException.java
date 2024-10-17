@@ -1,4 +1,4 @@
-package com.qticket.payment.domain.confirm.exception;
+package com.qticket.payment.exception.domain;
 
 import com.qticket.payment.domain.confirm.ConfirmStatus;
 

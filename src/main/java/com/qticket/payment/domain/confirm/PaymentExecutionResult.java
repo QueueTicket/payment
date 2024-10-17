@@ -2,9 +2,9 @@ package com.qticket.payment.domain.confirm;
 
 import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.Failure;
 import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.TossPaymentConfirmResponse;
-import com.qticket.payment.domain.confirm.exception.NotValidConfirmedStatusException;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentStatus;
+import com.qticket.payment.exception.domain.NotValidConfirmedStatusException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
