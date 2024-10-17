@@ -1,14 +1,16 @@
 CREATE TABLE payment_event
 (
-    id           BIGINT                              AUTO_INCREMENT PRIMARY KEY,
-    customer_id  BIGINT                              NOT NULL,
-    order_id     VARCHAR(255) UNIQUE,
-    order_name   VARCHAR(255)                        NOT NULL,
-    method       ENUM ('CARD','EASY_PAY','TRANSFER') NOT NULL,
-    payment_key  VARCHAR(255) UNIQUE,
-    is_completed BOOLEAN                             NOT NULL DEFAULT FALSE,
-    approved_at  DATETIME,
-    fail_count   INT                                 NOT NULL DEFAULT 0
+    id                  BIGINT                              AUTO_INCREMENT PRIMARY KEY,
+    customer_id         BIGINT                              NOT NULL,
+    order_id            VARCHAR(255) UNIQUE,
+    order_name          VARCHAR(255)                        NOT NULL,
+    coupon_id           VARCHAR(255) UNIQUE,
+    discount_amount     DECIMAL(20, 2),
+    method              ENUM ('CARD','EASY_PAY','TRANSFER') NOT NULL,
+    payment_key         VARCHAR(255) UNIQUE,
+    is_completed        BOOLEAN                             NOT NULL DEFAULT FALSE,
+    approved_at         DATETIME,
+    fail_count          INT                                 NOT NULL DEFAULT 0
 ) engine = InnoDB;
 
 CREATE TABLE payment_order
@@ -17,7 +19,6 @@ CREATE TABLE payment_order
     payment_event_id        BIGINT                                                                 NOT NULL,
     customer_id             BIGINT                                                                 NOT NULL,
     order_id                VARCHAR(255)                                                           NOT NULL,
-    coupon_id               VARCHAR(255),
     concert_id              VARCHAR(255)                                                           NOT NULL,
     seat_id                 VARCHAR(255)                                                           NOT NULL,
     amount                  DECIMAL(20, 2)                                                         NOT NULL,

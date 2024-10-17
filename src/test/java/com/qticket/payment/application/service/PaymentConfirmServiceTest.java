@@ -60,7 +60,7 @@ class PaymentConfirmServiceTest extends PaymentTestHelper {
         PaymentConfirmCommand given = new PaymentConfirmCommand(
             paymentKey,
             orderId,
-            checkout.amount().toBigInteger().longValue()
+            checkout.actualPaymentAmount().longValue()
         );
 
         LocalDateTime approvedAt = LocalDateTime.now();
@@ -107,7 +107,7 @@ class PaymentConfirmServiceTest extends PaymentTestHelper {
         PaymentConfirmCommand given = new PaymentConfirmCommand(
             paymentKey,
             orderId,
-            checkout.amount().toBigInteger().longValue()
+            checkout.actualPaymentAmount().longValue()
         );
 
         PaymentExecutionResult result = PaymentExecutionResult.of(

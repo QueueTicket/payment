@@ -36,7 +36,6 @@ public class PaymentOrderJpaEntity {
 
     private Long customerId;
     private String orderId;
-    private String couponId;
     private String concertId;
     private String seatId;
     private BigDecimal amount;
@@ -47,13 +46,11 @@ public class PaymentOrderJpaEntity {
 
     private PaymentOrderJpaEntity(
         String orderId,
-        String couponId,
         String concertId,
         String seatId,
         BigDecimal amount
     ) {
         this.orderId = orderId;
-        this.couponId = couponId;
         this.concertId = concertId;
         this.seatId = seatId;
         this.amount = amount;
@@ -61,13 +58,11 @@ public class PaymentOrderJpaEntity {
 
     public static PaymentOrderJpaEntity of(
         String orderId,
-        String couponId,
         String concertId,
         String seatId,
         BigDecimal amount
     ) {
-
-        return new PaymentOrderJpaEntity(orderId, couponId, concertId, seatId, amount);
+        return new PaymentOrderJpaEntity(orderId, concertId, seatId, amount);
     }
 
     public void toPaymentEvent(PaymentEventJpaEntity paymentEventJpaEntity) {

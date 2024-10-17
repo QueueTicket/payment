@@ -6,14 +6,21 @@ import java.math.BigDecimal;
 public record CheckoutResult(
     String orderId,
     String orderName,
-    BigDecimal amount
+    BigDecimal amount,
+    BigDecimal discountAmount
 ) {
 
     public static CheckoutResult of(PaymentEvent paymentEvent) {
         return new CheckoutResult(
             paymentEvent.orderId(),
             paymentEvent.orderName(),
-            paymentEvent.totalAmount());
+            paymentEvent.totalAmount(),
+            paymentEvent.discountAmount()
+        );
+    }
+
+    public BigDecimal actualPaymentAmount() {
+        return amount.subtract(discountAmount);
     }
 
 }

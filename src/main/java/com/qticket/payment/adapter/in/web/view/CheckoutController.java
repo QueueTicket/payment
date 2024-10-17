@@ -21,6 +21,7 @@ public class CheckoutController {
         model.addAttribute("orderId", result.orderId());
         model.addAttribute("orderName", result.orderName());
         model.addAttribute("amount", result.amount());
+        model.addAttribute("discountAmount", result.discountAmount());
 
         return "widget/checkout";
     }

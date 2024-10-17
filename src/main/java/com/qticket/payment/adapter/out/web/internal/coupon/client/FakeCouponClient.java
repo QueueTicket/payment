@@ -12,9 +12,9 @@ public class FakeCouponClient implements CouponMockClient {
     public CouponValidateResponse validateCoupon(String couponId, Reservation reservation) {
         return new CouponValidateResponse(
             couponId,
-            17_000,
-            DiscountPolicy.FIXED,
-            10_000
+            50,
+            DiscountPolicy.PERCENTAGE,
+            20_000
         );
     }
 

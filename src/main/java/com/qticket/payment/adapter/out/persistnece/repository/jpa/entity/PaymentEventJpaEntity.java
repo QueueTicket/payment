@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +36,8 @@ public class PaymentEventJpaEntity {
     private Long customerId;
     private String orderId;
     private String orderName;
+    private String couponId;
+    private BigDecimal discountAmount;
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
     private String paymentKey;
@@ -46,12 +49,16 @@ public class PaymentEventJpaEntity {
         Long customerId,
         String orderId,
         String orderName,
+        String couponId,
+        BigDecimal discountAmount,
         PaymentMethod method,
         List<PaymentOrderJpaEntity> paymentOrderEntities
     ) {
         this.customerId = customerId;
         this.orderId = orderId;
         this.orderName = orderName;
+        this.couponId = couponId;
+        this.discountAmount = discountAmount;
         this.paymentOrders = paymentOrderEntities;
         this.method = method;
         paymentOrderEntities.forEach(it -> it.toPaymentEvent(this));
@@ -61,13 +68,23 @@ public class PaymentEventJpaEntity {
         Long customerId,
         String orderId,
         String orderName,
+        String couponId,
+        BigDecimal amount,
         PaymentMethod method,
         List<PaymentOrder> paymentOrders
     ) {
         List<PaymentOrderJpaEntity> paymentOrdersEntities = paymentOrders.stream()
             .map(PaymentOrder::toEntity)
             .toList();
-        return new PaymentEventJpaEntity(customerId, orderId, orderName, method, paymentOrdersEntities);
+        return new PaymentEventJpaEntity(
+            customerId,
+            orderId,
+            orderName,
+            couponId,
+            amount,
+            method,
+            paymentOrdersEntities
+        );
     }
 
     public List<PaymentOrderJpaEntity> extractChangeableProcessingOrders() {

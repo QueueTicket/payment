@@ -1,7 +1,7 @@
 # @name 결제 요청
 GET http://localhost:8080/
-    ?customerId=2
-    &couponId=new-coupon
+    ?customerId=15
+    &couponId=new-coupon3
     &concertId=concert-a
     &seatIds=1,
     2&paymentMethod=EASY_PAY

@@ -17,7 +17,7 @@ public class MockConcertClient implements ConcertMockClient {
         ConcertSeat concertSeat = new ConcertSeat(
             UUID.randomUUID().toString(),
             SeatGrade.R,
-            new BigDecimal(115_000)
+            new BigDecimal(120_000)
         );
         return new Reservation(
             customerId,

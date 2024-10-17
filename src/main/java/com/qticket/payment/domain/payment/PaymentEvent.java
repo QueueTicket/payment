@@ -10,6 +10,8 @@ public record PaymentEvent(
     Long customerId,
     String orderId,
     String orderName,
+    String couponId,
+    BigDecimal discountAmount,
     PaymentMethod method,
     List<PaymentOrder> paymentOrders,
     String paymentKey,
@@ -20,6 +22,8 @@ public record PaymentEvent(
         Long customerId,
         String orderId,
         String orderName,
+        String couponId,
+        BigDecimal discountedAmount,
         PaymentMethod method,
         List<PaymentOrder> paymentOrders
     ) {
@@ -28,6 +32,8 @@ public record PaymentEvent(
             customerId,
             orderId,
             orderName,
+            couponId,
+            discountedAmount,
             method,
             paymentOrders,
             null,
@@ -39,6 +45,8 @@ public record PaymentEvent(
         Long customerId,
         String orderId,
         String orderName,
+        String couponId,
+        BigDecimal discountedAmount,
         PaymentMethod method,
         List<PaymentOrder> paymentOrders
     ) {
@@ -46,6 +54,8 @@ public record PaymentEvent(
             customerId,
             orderId,
             orderName,
+            couponId,
+            discountedAmount,
             method,
             paymentOrders
         );
@@ -62,6 +72,8 @@ public record PaymentEvent(
             customerId,
             orderId,
             orderName,
+            couponId,
+            discountAmount,
             method,
             paymentOrders
         );

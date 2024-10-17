@@ -1,7 +1,6 @@
 package com.qticket.payment.domain.payment;
 
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
-import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.checkout.Reservation;
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,7 +13,6 @@ public record PaymentOrder(
     String orderId,
     String concertId,
     String seatId,
-    String couponId,
     BigDecimal amount,
     PaymentStatus status,
     boolean isLedgerCompleted,
@@ -25,7 +23,6 @@ public record PaymentOrder(
         String orderId,
         String concertId,
         String seatId,
-        String couponId,
         BigDecimal amount
     ) {
         this(
@@ -35,7 +32,6 @@ public record PaymentOrder(
             orderId,
             concertId,
             seatId,
-            couponId,
             amount,
             PaymentStatus.PENDING,
             false,
@@ -45,12 +41,11 @@ public record PaymentOrder(
 
     public static List<PaymentOrder> preOrder(
         String orderId,
-        Reservation reservation,
-        Coupon coupon
+        Reservation reservation
     ) {
         return reservation.concertSeats()
             .stream()
-            .map(it -> of(orderId, reservation.concertId(), it.id(), coupon.id(), it.price()))
+            .map(it -> of(orderId, reservation.concertId(), it.id(), it.price()))
             .toList();
     }
 
@@ -58,14 +53,12 @@ public record PaymentOrder(
         String orderId,
         String concertId,
         String seatId,
-        String couponId,
         BigDecimal amount
     ) {
         return new PaymentOrder(
             orderId,
             concertId,
             seatId,
-            couponId,
             amount
         );
     }
@@ -75,7 +68,6 @@ public record PaymentOrder(
             orderId,
             concertId,
             seatId,
-            couponId,
             amount
         );
     }

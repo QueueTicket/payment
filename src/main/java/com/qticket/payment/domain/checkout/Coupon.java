@@ -8,18 +8,22 @@ public record Coupon(
     String id,
     Long customerId,
     BigDecimal discountAmount,
-    DiscountPolicy discountPolicy,
-    BigDecimal maxDiscountAmount
+    BigDecimal maxDiscountAmount,
+    DiscountPolicy discountPolicy
 ) {
 
     public static Coupon of(Long customerId, CouponValidateResponse response) {
         return new Coupon(
             response.id(),
             customerId,
-            BigDecimal.valueOf(response.discountAmount()),
-            response.discountPolicy(),
-            BigDecimal.valueOf(response.maxDiscountAmount())
+            java.math.BigDecimal.valueOf(response.discountAmount()),
+            java.math.BigDecimal.valueOf(response.maxDiscountAmount()),
+            response.discountPolicy()
         );
+    }
+
+    public BigDecimal applicableDiscountAmount(BigDecimal originPrice) {
+        return discountPolicy.calculateDiscount(originPrice, discountAmount, maxDiscountAmount);
     }
 
 }

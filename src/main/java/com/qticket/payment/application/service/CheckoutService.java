@@ -39,12 +39,13 @@ public class CheckoutService implements CheckoutUseCase {
         Customer customer = loadCustomerPort.getCustomer(command.customerId());
         Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
         Coupon coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
-        PaymentEvent paymentEvent = createPaymentEvent(command, customer, reservation, coupon);
 
+        PaymentEvent paymentEvent = createPaymentEvent(command, customer, reservation, coupon);
         savePaymentPort.save(paymentEvent);
 
         return CheckoutResult.of(paymentEvent);
     }
+
 
     private PaymentEvent createPaymentEvent(
         CheckoutCommand command,
@@ -56,13 +57,15 @@ public class CheckoutService implements CheckoutUseCase {
             customer.id(),
             command.idempotencyKey(),
             reservation.seatNames(),
+            coupon.id(),
+            coupon.applicableDiscountAmount(reservation.totalPrice()),
             PaymentMethod.EASY_PAY,
             PaymentOrder.preOrder(
                 command.idempotencyKey(),
-                reservation,
-                coupon
+                reservation
             )
         );
     }
+
 
 }
