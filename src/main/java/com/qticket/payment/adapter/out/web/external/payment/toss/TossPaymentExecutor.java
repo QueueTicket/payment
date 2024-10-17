@@ -3,7 +3,7 @@ package com.qticket.payment.adapter.out.web.external.payment.toss;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qticket.payment.adapter.out.web.external.payment.executor.PaymentExecutor;
-import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.TossPaymentConfirmResponse;
+import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.TossPaymentConfirmResponse;
 import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
 import com.qticket.payment.domain.confirm.ConfirmStatus;
 import com.qticket.payment.domain.confirm.PaymentExecutionResult;

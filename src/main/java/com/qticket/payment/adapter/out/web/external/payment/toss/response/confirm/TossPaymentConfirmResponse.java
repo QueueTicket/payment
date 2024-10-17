@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.web.external.payment.toss.confirm;
+package com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.List;

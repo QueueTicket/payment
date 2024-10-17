@@ -6,7 +6,7 @@ import static org.mockito.BDDMockito.given;
 
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaEntity;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
-import com.qticket.payment.adapter.out.web.external.payment.toss.confirm.Failure;
+import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
 import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
 import com.qticket.payment.application.port.out.PaymentExecutionPort;
