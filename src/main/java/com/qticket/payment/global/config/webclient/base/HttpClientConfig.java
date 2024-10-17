@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.web.external.config.client.base;
+package com.qticket.payment.global.config.webclient.base;
 
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;

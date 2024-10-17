@@ -1,6 +1,6 @@
 package com.qticket.payment;
 
-import com.qticket.payment.adapter.out.web.external.payment.toss.config.client.TossPaymentsProperties;
+import com.qticket.payment.global.config.webclient.toss.TossPaymentsProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;

@@ -1,9 +1,9 @@
-package com.qticket.payment.adapter.out.web.external.payment.toss.config.client;
+package com.qticket.payment.global.config.webclient.toss;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import com.qticket.payment.adapter.out.web.external.config.client.base.BaseWebClientConfig;
-import com.qticket.payment.adapter.out.web.external.config.client.base.HttpClientConfig;
+import com.qticket.payment.global.config.webclient.base.BaseWebClientConfig;
+import com.qticket.payment.global.config.webclient.base.HttpClientConfig;
 import java.util.Base64;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
