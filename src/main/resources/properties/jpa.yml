@@ -2,10 +2,17 @@ spring:
   jpa:
     database: mysql
     open-in-view: false
-    show-sql: true
+    show-sql: false
     hibernate.ddl-auto: validate
     properties:
       hibernate:
-        format_sql: true
-        highlight_sql: true
+        format_sql: false
+        highlight_sql: false
 ---
+spring:
+  config.activate.on-profile: local
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        highlight_sql: ture
