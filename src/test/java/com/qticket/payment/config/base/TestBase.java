@@ -1,6 +1,6 @@
-package com.qticket.payment.base;
+package com.qticket.payment.config.base;
 
-import static com.qticket.payment.base.TestBase.TEST;
+import static com.qticket.payment.config.base.TestBase.TEST;
 
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;

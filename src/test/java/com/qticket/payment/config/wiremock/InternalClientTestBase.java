@@ -1,4 +1,4 @@
-package com.qticket.payment.base.wiremock;
+package com.qticket.payment.config.wiremock;
 
 import com.qticket.payment.config.feign.InternalFeignMockUrlConfig;
 import org.springframework.context.annotation.Import;
