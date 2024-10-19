@@ -8,21 +8,6 @@ spring:
       allow-override: false
 ---
 spring:
-  config.activate.on-profile: local2
-
-eureka:
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:19090/eureka/
-
-  instance:
-    prefer-ip-address: true
-    lease-renewal-interval-in-seconds: 3
-    lease-expiration-duration-in-seconds: 5
----
-spring:
   config.activate.on-profile: dev
 
 eureka:
