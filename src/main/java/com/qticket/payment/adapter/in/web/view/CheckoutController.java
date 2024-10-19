@@ -14,7 +14,7 @@ public class CheckoutController {
 
     private final CheckoutUseCase checkoutUseCase;
 
-    @GetMapping
+    @GetMapping("/checkout")
     String checkoutPage(CheckoutRequest request, Model model) {
         CheckoutResult result = checkoutUseCase.checkout(request.toCommand());
 
