@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "payment_order_history")
+@Table(name = "payment_item_history")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentOrderHistoryJpaEntity {
+public class PaymentItemHistoryJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +28,10 @@ public class PaymentOrderHistoryJpaEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "payment_order_id",
-        foreignKey = @ForeignKey(name = "FK_HISTORY_TO_PAYMENT_ORDER")
+        name = "payment_item_id",
+        foreignKey = @ForeignKey(name = "FK_HISTORY_TO_PAYMENT_ITEM")
     )
-    private PaymentOrderJpaEntity paymentOrder;
+    private PaymentItemJpaEntity paymentItem;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus previousStatus;
@@ -40,24 +40,24 @@ public class PaymentOrderHistoryJpaEntity {
     private PaymentStatus newStatus;
     private String reason;
 
-    private PaymentOrderHistoryJpaEntity(
-        PaymentOrderJpaEntity paymentOrder,
+    private PaymentItemHistoryJpaEntity(
+        PaymentItemJpaEntity paymentItem,
         PaymentStatus newStatus,
         String reason
     ) {
-        this.paymentOrder = paymentOrder;
-        this.previousStatus = paymentOrder.getStatus();
+        this.paymentItem = paymentItem;
+        this.previousStatus = paymentItem.getStatus();
         this.newStatus = newStatus;
         this.reason = reason;
     }
 
-    public static PaymentOrderHistoryJpaEntity of(
-        PaymentOrderJpaEntity paymentOrder,
+    public static PaymentItemHistoryJpaEntity of(
+        PaymentItemJpaEntity paymentItem,
         PaymentStatus newStatus,
         String reason
 
     ) {
-        return new PaymentOrderHistoryJpaEntity(paymentOrder, newStatus, reason);
+        return new PaymentItemHistoryJpaEntity(paymentItem, newStatus, reason);
     }
 
 }

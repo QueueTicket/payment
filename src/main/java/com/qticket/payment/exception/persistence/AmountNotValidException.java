@@ -4,7 +4,6 @@ import com.qticket.payment.exception.PaymentErrorCode;
 import com.qticket.payment.global.exception.ApplicationException;
 import java.math.BigDecimal;
 
-// TODO move to exception packages
 public class AmountNotValidException extends ApplicationException {
 
     private final String messageFormat = "주문 번호[%s]의 결제 금액이 올바르지 않습니다. %s != %s";

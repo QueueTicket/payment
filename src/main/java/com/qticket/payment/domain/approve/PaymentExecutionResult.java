@@ -18,20 +18,20 @@ public class PaymentExecutionResult {
 
     private String paymentKey;
     private String orderId;
-    private ConfirmStatus confirmStatus;
+    private ApproveStatus approveStatus;
     private ApproveDetails confirmDetails;
     private Failure failure;
 
     private PaymentExecutionResult(
         String paymentKey,
         String orderId,
-        ConfirmStatus confirmStatus,
+        ApproveStatus approveStatus,
         ApproveDetails confirmDetails,
         Failure failure
     ) {
         this.paymentKey = paymentKey;
         this.orderId = orderId;
-        this.confirmStatus = confirmStatus;
+        this.approveStatus = approveStatus;
         this.confirmDetails = confirmDetails;
         this.failure = failure;
         validateStatus();
@@ -41,7 +41,7 @@ public class PaymentExecutionResult {
         return new PaymentExecutionResult(
             response.paymentKey(),
             response.orderId(),
-            ConfirmStatus.valueOf(response.status()),
+            ApproveStatus.valueOf(response.status()),
             new ApproveDetails(
                 response.orderName(),
                 BigDecimal.valueOf(response.totalAmount()),
@@ -55,27 +55,27 @@ public class PaymentExecutionResult {
     public static PaymentExecutionResult of(
         String paymentKey,
         String orderId,
-        ConfirmStatus confirmStatus,
+        ApproveStatus approveStatus,
         ApproveDetails approveDetails,
         Failure failure
     ) {
         return new PaymentExecutionResult(
             paymentKey,
             orderId,
-            confirmStatus,
+            approveStatus,
             approveDetails,
             failure
         );
     }
 
     private void validateStatus() {
-        if (!confirmStatus.isValidConfirmCompletedStatus()) {
-            throw new NotValidConfirmedStatusException(paymentKey, orderId, confirmStatus);
+        if (!approveStatus.isValidConfirmCompletedStatus()) {
+            throw new NotValidConfirmedStatusException(paymentKey, orderId, approveStatus);
         }
     }
 
     public PaymentStatus getpaymentStatus() {
-        return confirmStatus.toPaymentStatus();
+        return approveStatus.toPaymentStatus();
     }
 
     public record ApproveDetails(

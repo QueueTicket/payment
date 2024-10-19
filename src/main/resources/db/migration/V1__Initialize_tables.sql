@@ -12,7 +12,7 @@ CREATE TABLE payment
     approved_at        DATETIME COMMENT 'PG 승인 일시'
 ) engine = InnoDB;
 
-CREATE TABLE payment_order
+CREATE TABLE payment_item
 (
     id                      BIGINT AUTO_INCREMENT PRIMARY KEY,
     payment_id              BIGINT         NOT NULL COMMENT '결제 ID',
@@ -26,14 +26,14 @@ CREATE TABLE payment_order
     FOREIGN KEY (payment_id) REFERENCES payment (id)
 ) engine = InnoDB;
 
-CREATE TABLE payment_order_history
+CREATE TABLE payment_item_history
 (
     id               BIGINT AUTO_INCREMENT PRIMARY KEY,
-    payment_order_id BIGINT NOT NULL COMMENT '결제 항목 ID',
+    payment_item_id BIGINT NOT NULL COMMENT '결제 항목 ID',
     previous_status  ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FAILED', 'UNKNOWN_APPROVE') COMMENT '이전 결제 상태',
     new_status       ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FAILED', 'UNKNOWN_APPROVE') COMMENT '신규 결제 상태',
     reason           VARCHAR(255) COMMENT '결제 사유',
-    FOREIGN KEY (payment_order_id) REFERENCES payment_order (id)
+    FOREIGN KEY (payment_item_id) REFERENCES payment_item (id)
 ) engine = InnoDB;
 
 CREATE TABLE benefit

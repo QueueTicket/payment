@@ -1,6 +1,6 @@
 package com.qticket.payment.domain.payment;
 
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentItemJpaEntity;
 import com.qticket.payment.domain.checkout.Reservation;
 import java.math.BigDecimal;
 import java.util.List;
@@ -9,9 +9,9 @@ import lombok.Builder;
 // TODO 정산을 위한 판매자 정보 추가 : sellerId
 // TODO 일급 컬렉션으로 도메인 로직 이관
 @Builder
-public record PaymentOrder(
+public record PaymentItem(
     Long id,
-    Long paymentEventId,
+    Long paymentId,
     Long customerId,
     String orderId,
     String concertId,
@@ -22,7 +22,7 @@ public record PaymentOrder(
     boolean isSettlementCompleted
 ) {
 
-    private PaymentOrder(
+    private PaymentItem(
         String orderId,
         String concertId,
         String seatId,
@@ -42,7 +42,7 @@ public record PaymentOrder(
         );
     }
 
-    public static List<PaymentOrder> preOrder(
+    public static List<PaymentItem> preOrder(
         String orderId,
         Reservation reservation
     ) {
@@ -52,13 +52,13 @@ public record PaymentOrder(
             .toList();
     }
 
-    public static PaymentOrder of(
+    public static PaymentItem of(
         String orderId,
         String concertId,
         String seatId,
         BigDecimal amount
     ) {
-        return new PaymentOrder(
+        return new PaymentItem(
             orderId,
             concertId,
             seatId,
@@ -66,8 +66,8 @@ public record PaymentOrder(
         );
     }
 
-    public PaymentOrderJpaEntity toEntity() {
-        return PaymentOrderJpaEntity.of(
+    public PaymentItemJpaEntity toEntity() {
+        return PaymentItemJpaEntity.of(
             orderId,
             concertId,
             seatId,

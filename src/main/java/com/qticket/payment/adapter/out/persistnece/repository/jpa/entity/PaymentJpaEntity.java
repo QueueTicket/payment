@@ -2,8 +2,8 @@ package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.checkout.Benefit;
+import com.qticket.payment.domain.payment.PaymentItem;
 import com.qticket.payment.domain.payment.PaymentMethod;
-import com.qticket.payment.domain.payment.PaymentOrder;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -25,15 +25,14 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "payment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentEventJpaEntity {
+public class PaymentJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // TODO @Cascade(CascadeType.ALL) // 결제와 결제주문의 생애주기 같은 경우 적용을 고려
-    @OneToMany(mappedBy = "paymentEvent")
-    private List<PaymentOrderJpaEntity> paymentOrders = new ArrayList<>();
+    @OneToMany(mappedBy = "payment", cascade = CascadeType.PERSIST)
+    private List<PaymentItemJpaEntity> paymentItems = new ArrayList<>();
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)
     private BenefitJpaEntity benefit;
@@ -49,15 +48,15 @@ public class PaymentEventJpaEntity {
     private int failCount = 0;
     private LocalDateTime approvedAt;
 
-    private PaymentEventJpaEntity(
-        List<PaymentOrderJpaEntity> paymentOrderEntities,
+    private PaymentJpaEntity(
+        List<PaymentItemJpaEntity> paymentItemEntities,
         BenefitJpaEntity benefit,
         Long customerId,
         String orderId,
         String orderName,
         PaymentMethod method
     ) {
-        this.paymentOrders = paymentOrderEntities;
+        this.paymentItems = paymentItemEntities;
         this.benefit = benefit;
         this.customerId = customerId;
         this.orderId = orderId;
@@ -67,26 +66,26 @@ public class PaymentEventJpaEntity {
         if (benefit != null) {
             benefit.toPayment(this);
         }
-        paymentOrderEntities.forEach(it -> it.toPaymentEvent(this));
+        paymentItemEntities.forEach(it -> it.toPaymentEvent(this));
     }
 
-    public static PaymentEventJpaEntity of(
+    public static PaymentJpaEntity of(
         Long customerId,
         String orderId,
         String orderName,
-        List<PaymentOrder> paymentOrders,
+        List<PaymentItem> paymentItems,
         Benefit benefit,
         PaymentMethod method
     ) {
         // TODO 결제 항목 일급 컬렉션으로 이관
-        List<PaymentOrderJpaEntity> paymentOrderEntities = paymentOrders.stream()
-            .map(PaymentOrder::toEntity)
+        List<PaymentItemJpaEntity> paymentItemEntities = paymentItems.stream()
+            .map(PaymentItem::toEntity)
             .toList();
 
         BenefitJpaEntity benefitEntity = (benefit != null) ? benefit.toEntity() : null;
 
-        return new PaymentEventJpaEntity(
-            paymentOrderEntities,
+        return new PaymentJpaEntity(
+            paymentItemEntities,
             benefitEntity,
             customerId,
             orderId,
@@ -96,9 +95,9 @@ public class PaymentEventJpaEntity {
     }
 
     // TODO 일급 컬렉션으로 이관
-    public List<PaymentOrderJpaEntity> extractChangeableProcessingOrders() {
-        return paymentOrders.stream()
-            .filter(PaymentOrderJpaEntity::isChangeableInProcessing)
+    public List<PaymentItemJpaEntity> extractChangeableProcessingOrders() {
+        return paymentItems.stream()
+            .filter(PaymentItemJpaEntity::isChangeableInProcessing)
             .toList();
     }
 

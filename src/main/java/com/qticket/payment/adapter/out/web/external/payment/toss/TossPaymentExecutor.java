@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qticket.payment.adapter.out.web.external.payment.executor.PaymentExecutor;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.TossPaymentConfirmResponse;
 import com.qticket.payment.application.port.in.command.PaymentApproveCommand;
-import com.qticket.payment.domain.approve.ConfirmStatus;
+import com.qticket.payment.domain.approve.ApproveStatus;
 import com.qticket.payment.domain.approve.PaymentExecutionResult;
 import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentMethod;
@@ -45,7 +45,7 @@ public class TossPaymentExecutor implements PaymentExecutor {
         return PaymentExecutionResult.of(
             response.paymentKey(),
             response.orderId(),
-            ConfirmStatus.valueOf(response.status()),
+            ApproveStatus.valueOf(response.status()),
             new ApproveDetails(
                 response.orderName(),
                 BigDecimal.valueOf(response.totalAmount()),

@@ -8,7 +8,7 @@ import lombok.Builder;
 @Builder
 public record Benefit(
     String id,
-    String paymentEventId,
+    String paymentId,
     BigDecimal totalPrice,
     BigDecimal benefitAmount
 ) {

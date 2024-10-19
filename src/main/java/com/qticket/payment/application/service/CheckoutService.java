@@ -11,8 +11,8 @@ import com.qticket.payment.domain.checkout.CheckoutResult;
 import com.qticket.payment.domain.checkout.Customer;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.payment.PaymentEvent;
+import com.qticket.payment.domain.payment.PaymentItem;
 import com.qticket.payment.domain.payment.PaymentMethod;
-import com.qticket.payment.domain.payment.PaymentOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,7 +57,7 @@ public class CheckoutService implements CheckoutUseCase {
             .orderName(reservation.seatNames())
             .method(PaymentMethod.EASY_PAY)
             .benefit(benefit)
-            .paymentOrders(PaymentOrder.preOrder(
+            .paymentItems(PaymentItem.preOrder(
                 command.idempotencyKey(),
                 reservation
             ))
@@ -74,7 +74,7 @@ public class CheckoutService implements CheckoutUseCase {
             .orderId(command.idempotencyKey())
             .orderName(reservation.seatNames())
             .method(PaymentMethod.EASY_PAY)
-            .paymentOrders(PaymentOrder.preOrder(
+            .paymentItems(PaymentItem.preOrder(
                 command.idempotencyKey(),
                 reservation
             ))

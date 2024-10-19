@@ -1,8 +1,8 @@
 package com.qticket.payment.application.service;
 
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaRepository;
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderHistoryJpaRepository;
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaRepository;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentItemHistoryJpaRepository;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentItemJpaRepository;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentJpaRepository;
 import com.qticket.payment.application.port.in.command.CheckoutCommand;
 import com.qticket.payment.config.base.SpringBootTestBase;
 import com.qticket.payment.config.p6spy.P6spySqlFormatConfig;
@@ -27,19 +27,19 @@ public class PaymentTestHelper extends SpringBootTestBase {
     );
 
     @Autowired
-    protected PaymentEventJpaRepository paymentEventJpaRepository;
+    protected PaymentJpaRepository paymentJpaRepository;
 
     @Autowired
-    protected PaymentOrderJpaRepository paymentOrderJpaRepository;
+    protected PaymentItemJpaRepository paymentItemJpaRepository;
 
     @Autowired
-    protected PaymentOrderHistoryJpaRepository paymentOrderHistoryJpaRepository;
+    protected PaymentItemHistoryJpaRepository paymentItemHistoryJpaRepository;
 
     @BeforeEach
     void tearDown() {
-        paymentOrderHistoryJpaRepository.deleteAll();
-        paymentOrderJpaRepository.deleteAll();
-        paymentEventJpaRepository.deleteAll();
+        paymentItemHistoryJpaRepository.deleteAll();
+        paymentItemJpaRepository.deleteAll();
+        paymentJpaRepository.deleteAll();
     }
 
 }

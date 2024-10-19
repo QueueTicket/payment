@@ -36,7 +36,7 @@ public class BenefitJpaEntity {
         name = "payment_id",
         foreignKey = @ForeignKey(name = "FK_BENEFIT_TO_PAYMENT")
     )
-    private PaymentEventJpaEntity payment;
+    private PaymentJpaEntity payment;
 
     private String couponId;
 
@@ -50,8 +50,8 @@ public class BenefitJpaEntity {
         this.discountAmount = discountAmount;
     }
 
-    public void toPayment(PaymentEventJpaEntity paymentEventJpaEntity) {
-        this.payment = paymentEventJpaEntity;
+    public void toPayment(PaymentJpaEntity paymentJpaEntity) {
+        this.payment = paymentJpaEntity;
     }
 
 }

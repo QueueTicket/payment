@@ -19,9 +19,9 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "payment_order")
+@Table(name = "payment_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentOrderJpaEntity {
+public class PaymentItemJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,7 +32,7 @@ public class PaymentOrderJpaEntity {
         name = "payment_id",
         foreignKey = @ForeignKey(name = "FK_ITEM_TO_PAYMENT")
     )
-    private PaymentEventJpaEntity paymentEvent;
+    private PaymentJpaEntity payment;
 
     private String orderId;
     private String concertId;
@@ -43,7 +43,7 @@ public class PaymentOrderJpaEntity {
     private boolean isLedgerCompleted = false;
     private boolean isSettlementCompleted = false;
 
-    private PaymentOrderJpaEntity(
+    private PaymentItemJpaEntity(
         String orderId,
         String concertId,
         String seatId,
@@ -55,17 +55,17 @@ public class PaymentOrderJpaEntity {
         this.amount = amount;
     }
 
-    public static PaymentOrderJpaEntity of(
+    public static PaymentItemJpaEntity of(
         String orderId,
         String concertId,
         String seatId,
         BigDecimal amount
     ) {
-        return new PaymentOrderJpaEntity(orderId, concertId, seatId, amount);
+        return new PaymentItemJpaEntity(orderId, concertId, seatId, amount);
     }
 
-    public void toPaymentEvent(PaymentEventJpaEntity paymentEventJpaEntity) {
-        paymentEvent = paymentEventJpaEntity;
+    public void toPaymentEvent(PaymentJpaEntity paymentJpaEntity) {
+        payment = paymentJpaEntity;
     }
 
     public boolean isChangeableInProcessing() {

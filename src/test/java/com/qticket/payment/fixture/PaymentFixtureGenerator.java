@@ -9,8 +9,8 @@ import com.qticket.payment.domain.checkout.ConcertSeat;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.checkout.Tickets;
 import com.qticket.payment.domain.payment.PaymentEvent;
+import com.qticket.payment.domain.payment.PaymentItem;
 import com.qticket.payment.domain.payment.PaymentMethod;
-import com.qticket.payment.domain.payment.PaymentOrder;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -50,7 +50,7 @@ public class PaymentFixtureGenerator extends TestBase {
         .orderName(reservation.seatNames())
         .benefit(benefit)
         .method(PaymentMethod.EASY_PAY)
-        .paymentOrders(PaymentOrder.preOrder(
+        .paymentItems(PaymentItem.preOrder(
             orderId,
             reservation
         ))

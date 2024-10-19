@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaEntity;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentJpaEntity;
 import com.qticket.payment.domain.checkout.CheckoutResult;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
@@ -27,11 +27,11 @@ class CheckoutServiceTest extends PaymentTestHelper {
         CheckoutResult actual = checkoutService.checkout(checkoutCommand);
 
         // Then
-        PaymentEventJpaEntity paymentEvent = paymentEventJpaRepository.findByOrderId(orderId);
+        PaymentJpaEntity paymentEvent = paymentJpaRepository.findByOrderId(orderId);
 
         assertThat(actual.amount()).isEqualTo(new BigDecimal(120_000));
         assertFalse(paymentEvent.isCompleted());
-        assertThat(paymentEvent.getPaymentOrders())
+        assertThat(paymentEvent.getPaymentItems())
             .allMatch(order -> !order.isLedgerCompleted() && !order.isSettlementCompleted());
     }
 

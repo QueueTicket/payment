@@ -1,6 +1,6 @@
 package com.qticket.payment.domain.payment;
 
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaEntity;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentJpaEntity;
 import com.qticket.payment.domain.checkout.Benefit;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,24 +15,24 @@ public record PaymentEvent(
     String orderId,
     String orderName,
     Benefit benefit,
-    List<PaymentOrder> paymentOrders,
+    List<PaymentItem> paymentItems,
     PaymentMethod method,
     String paymentKey,
     LocalDateTime approvedAt
 ) {
 
     public BigDecimal totalAmount() {
-        return paymentOrders.stream()
-            .map(PaymentOrder::amount)
+        return paymentItems.stream()
+            .map(PaymentItem::amount)
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public PaymentEventJpaEntity toEntity() {
-        return PaymentEventJpaEntity.of(
+    public PaymentJpaEntity toEntity() {
+        return PaymentJpaEntity.of(
             customerId,
             orderId,
             orderName,
-            paymentOrders,
+            paymentItems,
             benefit,
             method
         );
