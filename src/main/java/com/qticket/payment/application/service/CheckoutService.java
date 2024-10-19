@@ -6,11 +6,12 @@ import com.qticket.payment.application.port.out.LoadConcertPort;
 import com.qticket.payment.application.port.out.LoadCouponPort;
 import com.qticket.payment.application.port.out.LoadCustomerPort;
 import com.qticket.payment.application.port.out.SavePaymentPort;
+import com.qticket.payment.domain.checkout.Benefit;
 import com.qticket.payment.domain.checkout.CheckoutResult;
-import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.checkout.Customer;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.payment.PaymentEvent;
+import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,45 +38,47 @@ public class CheckoutService implements CheckoutUseCase {
         Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
 
         if (command.hasNoCoupon()) {
-            return createWithoutCouponPayment(command, customer, reservation);
+            return createWithoutBenefitPayment(command, customer, reservation);
         }
 
-        Coupon coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
-        return createPaymentEvent(command, customer, reservation, coupon);
+        Benefit benefit = loadCouponPort.getCoupon(command.couponId(), reservation);
+        return createPaymentEvent(command, customer, reservation, benefit);
     }
 
     private PaymentEvent createPaymentEvent(
         CheckoutCommand command,
         Customer customer,
         Reservation reservation,
-        Coupon coupon
+        Benefit benefit
     ) {
-        return PaymentEvent.preparePayment(
-            customer.id(),
-            command.idempotencyKey(),
-            reservation.seatNames(),
-            coupon,
-            PaymentOrder.preOrder(
+        return PaymentEvent.builder()
+            .customerId(customer.id())
+            .orderId(command.idempotencyKey())
+            .orderName(reservation.seatNames())
+            .method(PaymentMethod.EASY_PAY)
+            .benefit(benefit)
+            .paymentOrders(PaymentOrder.preOrder(
                 command.idempotencyKey(),
                 reservation
-            )
-        );
+            ))
+            .build();
     }
 
-    private PaymentEvent createWithoutCouponPayment(
+    private PaymentEvent createWithoutBenefitPayment(
         CheckoutCommand command,
         Customer customer,
         Reservation reservation
     ) {
-        return PaymentEvent.prepareWithoutCouponPayment(
-            customer.id(),
-            command.idempotencyKey(),
-            reservation.seatNames(),
-            PaymentOrder.preOrder(
+        return PaymentEvent.builder()
+            .customerId(customer.id())
+            .orderId(command.idempotencyKey())
+            .orderName(reservation.seatNames())
+            .method(PaymentMethod.EASY_PAY)
+            .paymentOrders(PaymentOrder.preOrder(
                 command.idempotencyKey(),
                 reservation
-            )
-        );
+            ))
+            .build();
     }
 
 }

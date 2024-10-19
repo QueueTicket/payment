@@ -10,4 +10,4 @@ values (120000, 'test-concertId', false, false, '9c7bf46c-3b77-4a56-9c17-e944d0b
 
 insert into benefit
     (coupon_id, discount_amount, discount_policy, payment_id)
-values ('test-coupon-Id', 20000, 'PERCENTAGE', 1);
+values ('test-benefit-Id', 20000, 'PERCENTAGE', 1);

@@ -29,7 +29,7 @@ import reactor.core.publisher.Mono;
 class PaymentApproveServiceTest extends PaymentTestHelper {
 
     private final CheckoutUseCase checkoutUseCase;
-    private final AppliedCouponService appliedCouponService;
+    private final AppliedBenefitService appliedBenefitService;
     private final PaymentApproveService paymentConfirmService;
 
     @SpyBean
@@ -37,11 +37,11 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
 
     public PaymentApproveServiceTest(
         CheckoutUseCase checkoutUseCase,
-        AppliedCouponService appliedCouponService,
+        AppliedBenefitService appliedBenefitService,
         PaymentApproveService paymentApproveService
     ) {
         this.checkoutUseCase = checkoutUseCase;
-        this.appliedCouponService = appliedCouponService;
+        this.appliedBenefitService = appliedBenefitService;
         this.paymentConfirmService = paymentApproveService;
     }
 
@@ -71,7 +71,7 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
             null
         );
         given(paymentExecutionPort.execute(given)).willReturn(Mono.just(result));
-        appliedCouponService.appliedCoupon(orderId);
+        appliedBenefitService.appliedBenefit(orderId);
 
         // When
         PaymentApproveResult actual = paymentConfirmService.approve(given).block();
@@ -113,7 +113,7 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
             new Failure("E0001", "잔액 부족")
         );
         given(paymentExecutionPort.execute(given)).willReturn(Mono.just(result));
-        appliedCouponService.appliedCoupon(orderId);
+        appliedBenefitService.appliedBenefit(orderId);
 
         // When
         PaymentApproveResult actual = paymentConfirmService.approve(given).block();

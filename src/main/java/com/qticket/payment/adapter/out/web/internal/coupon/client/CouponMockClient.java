@@ -5,9 +5,6 @@ import com.qticket.payment.domain.checkout.Reservation;
 
 public interface CouponMockClient {
 
-    // /coupons/validate -> user_id, coupon_id, event_id(concert_id), totalPrice
-    // maxDiscountAmount는 discountAmount보다 클 수 없음
-    // DiscountPolicy에 따라서 할인 금액/할인률을 구분
     CouponValidateResponse validateCoupon(String couponId, Reservation reservation);
 
 }

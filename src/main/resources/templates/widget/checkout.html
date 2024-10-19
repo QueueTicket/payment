@@ -22,10 +22,10 @@
     <!-- 쿠폰 체크박스 -->
     <div style="padding-left: 30px">
       <div class="checkable typography--p">
-        <label class="checkable__label typography--regular" for="coupon-box"
+        <label class="checkable__label typography--regular" for="benefit-box"
         ><input aria-checked="true"
                 class="checkable__input"
-                id="coupon-box"
+                id="benefit-box"
                 th:attr="disabled=${discountAmount == null || discountAmount == 0}"
                 type="checkbox"/>
           <span class="checkable__label-text" th:if="${discountAmount != 0}">[[${discountAmount}]]원 쿠폰 적용</span>
@@ -42,7 +42,7 @@
 
   async function main() {
     const button = document.getElementById("payment-button");
-    const coupon = document.getElementById("coupon-box");
+    const benefit = document.getElementById("benefit-box");
 
     /*<![CDATA[*/
     const orderId = "[[${orderId}]]"
@@ -76,8 +76,8 @@
       }),
     ]);
 
-    coupon.addEventListener("change", async function () {
-      if (coupon.checked) {
+    benefit.addEventListener("change", async function () {
+      if (benefit.checked) {
         await widgets.setAmount({
           currency: "KRW",
           value: amount.value - discountAmount,
@@ -93,8 +93,8 @@
     });
 
     button.addEventListener("click", async function () {
-      if (coupon.checked) {
-        const response = await fetch("/applied/coupon/" + orderId, {
+      if (benefit.checked) {
+        const response = await fetch("/applied/benefit/" + orderId, {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",

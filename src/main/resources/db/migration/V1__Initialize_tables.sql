@@ -42,6 +42,5 @@ CREATE TABLE benefit
     payment_id      BIGINT         NOT NULL COMMENT '결제 ID',
     coupon_id       VARCHAR(255) UNIQUE COMMENT '쿠폰 ID',
     discount_amount DECIMAL(20, 2) NOT NULL COMMENT '할인 적용 금액',
-    discount_policy VARCHAR(255)   NOT NULL COMMENT '할인 정책',
     FOREIGN KEY (payment_id) REFERENCES payment (id)
 ) engine = InnoDB;

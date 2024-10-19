@@ -2,8 +2,6 @@ package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.qticket.payment.domain.payment.PaymentEvent;
-import com.qticket.payment.domain.payment.PaymentOrder;
 import java.math.BigDecimal;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,18 +11,7 @@ class PaymentOrderJpaRepositoryTest extends PaymentRepositoryTestHelper {
 
     @Test
     @DisplayName("혜택이 적용된 결제 금액 조회")
-    void findPaymentAmount() {
-        // Given
-        PaymentEvent paymentEvent = PaymentEvent.preparePayment(
-            customerId,
-            orderId,
-            reservation.seatNames(),
-            coupon,
-            PaymentOrder.preOrder(
-                orderId,
-                reservation
-            )
-        );
+    void findPaymentAmountWithBenefit() {
         // When
         PaymentEventJpaEntity paymentEventJpaEntity = paymentEvent.toEntity();
         paymentEventJpaEntity.applyBenefit();
@@ -40,18 +27,7 @@ class PaymentOrderJpaRepositoryTest extends PaymentRepositoryTestHelper {
 
     @Test
     @DisplayName("혜택이 적용되지 않은 결제 금액 조회")
-    void findPaymentAmount2() {
-        // Given
-        PaymentEvent paymentEvent = PaymentEvent.preparePayment(
-            customerId,
-            orderId,
-            reservation.seatNames(),
-            coupon,
-            PaymentOrder.preOrder(
-                orderId,
-                reservation
-            )
-        );
+    void findPaymentAmountWithoutBenefit() {
         // When
         paymentRepository.save(paymentEvent);
 

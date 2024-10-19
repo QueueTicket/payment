@@ -4,7 +4,7 @@ import com.qticket.payment.adapter.out.web.internal.coupon.client.CouponAppClien
 import com.qticket.payment.adapter.out.web.internal.coupon.client.CouponMockClient;
 import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
 import com.qticket.payment.application.port.out.LoadCouponPort;
-import com.qticket.payment.domain.checkout.Coupon;
+import com.qticket.payment.domain.checkout.Benefit;
 import com.qticket.payment.domain.checkout.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,7 +21,7 @@ public class CouponWebAdapter implements LoadCouponPort {
     private boolean useInternalClient;
 
     @Override
-    public Coupon getCoupon(String couponId, Reservation reservation) {
+    public Benefit getCoupon(String couponId, Reservation reservation) {
         if (useInternalClient) {
             CouponValidateResponse response = couponAppClient.validateCoupon(
                 reservation.customerId(),
@@ -30,9 +30,9 @@ public class CouponWebAdapter implements LoadCouponPort {
                 reservation.totalPrice().longValueExact()
             );
 
-            return Coupon.of(response, reservation.totalPrice());
+            return Benefit.of(response, reservation.totalPrice());
         }
-        return Coupon.of(couponMockClient.validateCoupon(couponId, reservation), reservation.totalPrice());
+        return Benefit.of(couponMockClient.validateCoupon(couponId, reservation), reservation.totalPrice());
     }
 
 }

@@ -1,59 +1,25 @@
 package com.qticket.payment.domain.payment;
 
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentEventJpaEntity;
-import com.qticket.payment.domain.checkout.Coupon;
+import com.qticket.payment.domain.checkout.Benefit;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import lombok.AccessLevel;
 import lombok.Builder;
 
 // TODO customer, order, benefit, paymentOrder : 도메인 정리, 분류별 객체화
-@Builder(access = AccessLevel.PRIVATE)
+@Builder
 public record PaymentEvent(
     Long id,
     Long customerId,
     String orderId,
     String orderName,
-    Coupon coupon,
+    Benefit benefit,
     List<PaymentOrder> paymentOrders,
     PaymentMethod method,
     String paymentKey,
     LocalDateTime approvedAt
-    //TODO PaymentBenefit benefits -> coupon id, discount amount,  policy ... etc
 ) {
-
-    public static PaymentEvent preparePayment(
-        Long customerId,
-        String orderId,
-        String orderName,
-        Coupon coupon,
-        List<PaymentOrder> paymentOrders
-    ) {
-        return PaymentEvent.builder()
-            .customerId(customerId)
-            .orderId(orderId)
-            .orderName(orderName)
-            .coupon(coupon)
-            .method(PaymentMethod.EASY_PAY)
-            .paymentOrders(paymentOrders)
-            .build();
-    }
-
-    public static PaymentEvent prepareWithoutCouponPayment(
-        Long customerId,
-        String orderId,
-        String orderName,
-        List<PaymentOrder> paymentOrders
-    ) {
-        return PaymentEvent.builder()
-            .customerId(customerId)
-            .orderId(orderId)
-            .orderName(orderName)
-            .method(PaymentMethod.EASY_PAY)
-            .paymentOrders(paymentOrders)
-            .build();
-    }
 
     public BigDecimal totalAmount() {
         return paymentOrders.stream()
@@ -67,16 +33,16 @@ public record PaymentEvent(
             orderId,
             orderName,
             paymentOrders,
-            coupon,
+            benefit,
             method
         );
     }
 
     public BigDecimal benefitAmount() {
-        if (coupon == null) {
+        if (benefit == null) {
             return BigDecimal.ZERO;
         }
-        return coupon.benefitAmount();
+        return benefit.benefitAmount();
     }
 
 }

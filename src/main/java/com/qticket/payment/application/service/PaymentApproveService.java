@@ -25,7 +25,6 @@ public class PaymentApproveService implements PaymentApproveUseCase {
         paymentStatusUpdatePort.updateStatusToProcessing(command.orderId(), command.paymentKey());
         paymentValidationPort.isValid(command.orderId(), command.amount());
 
-        // TODO 비동기 + 동기 로직의 blocking 처리 개선 : paymentStatusUpdatePort 반환 처리를 mono 타입으로 변경
         PaymentExecutionResult result = paymentExecutionPort.execute(command).block();
         paymentStatusUpdatePort.updatePaymentStatus(
             PaymentStatusUpdateCommand.from(result)

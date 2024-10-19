@@ -1,7 +1,7 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
-import com.qticket.payment.domain.checkout.Coupon;
+import com.qticket.payment.domain.checkout.Benefit;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
 import jakarta.persistence.CascadeType;
@@ -75,7 +75,7 @@ public class PaymentEventJpaEntity {
         String orderId,
         String orderName,
         List<PaymentOrder> paymentOrders,
-        Coupon coupon,
+        Benefit benefit,
         PaymentMethod method
     ) {
         // TODO 결제 항목 일급 컬렉션으로 이관
@@ -83,7 +83,7 @@ public class PaymentEventJpaEntity {
             .map(PaymentOrder::toEntity)
             .toList();
 
-        BenefitJpaEntity benefitEntity = (coupon != null) ? coupon.toEntity() : null;
+        BenefitJpaEntity benefitEntity = (benefit != null) ? benefit.toEntity() : null;
 
         return new PaymentEventJpaEntity(
             paymentOrderEntities,

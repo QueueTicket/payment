@@ -4,10 +4,13 @@ import com.qticket.payment.adapter.out.web.internal.concert.client.response.Seat
 import com.qticket.payment.adapter.out.web.internal.coupon.client.response.CouponValidateResponse;
 import com.qticket.payment.adapter.out.web.internal.coupon.client.response.DiscountPolicy;
 import com.qticket.payment.config.base.TestBase;
+import com.qticket.payment.domain.checkout.Benefit;
 import com.qticket.payment.domain.checkout.ConcertSeat;
-import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.checkout.Tickets;
+import com.qticket.payment.domain.payment.PaymentEvent;
+import com.qticket.payment.domain.payment.PaymentMethod;
+import com.qticket.payment.domain.payment.PaymentOrder;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
@@ -39,6 +42,18 @@ public class PaymentFixtureGenerator extends TestBase {
         20_000
     );
 
-    protected Coupon coupon = Coupon.of(couponValidateResponse, reservation.totalPrice());
+    protected Benefit benefit = Benefit.of(couponValidateResponse, reservation.totalPrice());
+
+    protected PaymentEvent paymentEvent = PaymentEvent.builder()
+        .customerId(customerId)
+        .orderId(orderId)
+        .orderName(reservation.seatNames())
+        .benefit(benefit)
+        .method(PaymentMethod.EASY_PAY)
+        .paymentOrders(PaymentOrder.preOrder(
+            orderId,
+            reservation
+        ))
+        .build();
 
 }

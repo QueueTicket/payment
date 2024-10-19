@@ -1,9 +1,6 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
-import com.qticket.payment.adapter.out.web.internal.coupon.client.response.DiscountPolicy;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
 import jakarta.persistence.GeneratedValue;
@@ -45,17 +42,12 @@ public class BenefitJpaEntity {
 
     private BigDecimal discountAmount;
 
-    @Enumerated(EnumType.STRING)
-    private DiscountPolicy discountPolicy;
-
     public BenefitJpaEntity(
         String couponId,
-        BigDecimal discountAmount,
-        DiscountPolicy discountPolicy
+        BigDecimal discountAmount
     ) {
         this.couponId = couponId;
         this.discountAmount = discountAmount;
-        this.discountPolicy = discountPolicy;
     }
 
     public void toPayment(PaymentEventJpaEntity paymentEventJpaEntity) {

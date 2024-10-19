@@ -9,13 +9,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Domain:Coupon")
-class CouponTest {
+class BenefitTest {
 
     @Test
-    @DisplayName("적용 가능한 최대 쿠폰 할인 금액 계산")
+    @DisplayName("적용 가능한 최대 할인 혜택 금액 계산")
     void calculateApplicableMaximumCouponDiscountAmount() {
         // Given
-        Coupon coupon = Coupon.of(
+        Benefit benefit = Benefit.of(
             new CouponValidateResponse(
                 "new-coupon",
                 20,
@@ -26,7 +26,7 @@ class CouponTest {
         );
 
         // When
-        BigDecimal amount = coupon.benefitAmount();
+        BigDecimal amount = benefit.benefitAmount();
 
         // Then
         assertThat(amount).isEqualTo(BigDecimal.valueOf(10_000));
