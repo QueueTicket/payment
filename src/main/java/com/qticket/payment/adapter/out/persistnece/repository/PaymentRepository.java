@@ -6,4 +6,6 @@ public interface PaymentRepository {
 
     void save(PaymentEvent paymentEvent);
 
+    void updateBenefitApplied(String orderId);
+
 }

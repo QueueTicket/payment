@@ -21,25 +21,25 @@ import lombok.NoArgsConstructor;
 @Getter
 @Entity
 @Table(
-    name = "payment_benefit",
+    name = "benefit",
     uniqueConstraints = @UniqueConstraint(
         name = "UK_PAYMENT_COUPON",
-        columnNames = {"payment_event_id", "coupon_id"}
+        columnNames = {"payment_id", "coupon_id"}
     )
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentBenefitJpaEntity {
+public class BenefitJpaEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "payment_event_id",
-        foreignKey = @ForeignKey(name = "FK_BENEFIT_TO_PAYMENT_EVENT")
+        name = "payment_id",
+        foreignKey = @ForeignKey(name = "FK_BENEFIT_TO_PAYMENT")
     )
-    private PaymentEventJpaEntity paymentEvent;
+    private PaymentEventJpaEntity payment;
 
     private String couponId;
 
@@ -47,5 +47,19 @@ public class PaymentBenefitJpaEntity {
 
     @Enumerated(EnumType.STRING)
     private DiscountPolicy discountPolicy;
+
+    public BenefitJpaEntity(
+        String couponId,
+        BigDecimal discountAmount,
+        DiscountPolicy discountPolicy
+    ) {
+        this.couponId = couponId;
+        this.discountAmount = discountAmount;
+        this.discountPolicy = discountPolicy;
+    }
+
+    public void toPayment(PaymentEventJpaEntity paymentEventJpaEntity) {
+        this.payment = paymentEventJpaEntity;
+    }
 
 }

@@ -3,7 +3,7 @@ package com.qticket.payment.adapter.out.web.internal.customer.client;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.qticket.payment.adapter.out.web.internal.customer.client.response.CustomerResponse;
-import com.qticket.payment.base.wiremock.InternalClientTestBase;
+import com.qticket.payment.config.wiremock.InternalClientTestBase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

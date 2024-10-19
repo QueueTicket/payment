@@ -30,9 +30,9 @@ public class CouponWebAdapter implements LoadCouponPort {
                 reservation.totalPrice().longValueExact()
             );
 
-            return Coupon.of(reservation.customerId(), response);
+            return Coupon.of(response, reservation.totalPrice());
         }
-        return Coupon.of(reservation.customerId(), couponMockClient.validateCoupon(couponId, reservation));
+        return Coupon.of(couponMockClient.validateCoupon(couponId, reservation), reservation.totalPrice());
     }
 
 }

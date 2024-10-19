@@ -1,6 +1,7 @@
 body {
   background-color: #e8f3ff;
 }
+
 .p {
   padding: 0;
   margin: 0;
@@ -10,16 +11,19 @@ body {
   word-break: keep-all;
   word-wrap: break-word;
 }
+
 .wrapper {
   max-width: 800px;
   margin: 0 auto;
 }
+
 .title {
   margin: 0 0 4px;
   font-size: 24px;
   font-weight: 600;
   color: #4e5968;
 }
+
 .box_section {
   background-color: white;
   border-radius: 10px;
@@ -34,6 +38,7 @@ body {
   overflow-x: auto; /* Add this property for horizontal scrolling */
   white-space: nowrap; /* Prevent text wrapping */
 }
+
 :root {
   --inverseGrey50: #202027;
   --inverseGrey100: #2c2c35;

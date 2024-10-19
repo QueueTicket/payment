@@ -15,7 +15,7 @@ public class PaymentValidationJpaRepository implements PaymentValidationReposito
 
     @Override
     public void isValid(String orderId, Long amount) {
-        BigDecimal totalAmount = paymentOrderJpaRepository.findActualPaymentAmount(orderId);
+        BigDecimal totalAmount = paymentOrderJpaRepository.findPaymentAmount(orderId);
         if (isTotalAmountNotMatched(amount, totalAmount)) {
             throw new AmountNotValidException(orderId, amount, totalAmount);
         }

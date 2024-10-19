@@ -2,7 +2,7 @@ package com.qticket.payment.adapter.out.web.external.payment.toss;
 
 import com.qticket.payment.adapter.out.web.external.payment.executor.PaymentExecutor;
 import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
-import com.qticket.payment.base.wiremock.WiremockTestBase;
+import com.qticket.payment.config.wiremock.WiremockTestBase;
 import com.qticket.payment.domain.confirm.PaymentExecutionResult;
 import java.util.UUID;
 import org.junit.jupiter.api.DisplayName;

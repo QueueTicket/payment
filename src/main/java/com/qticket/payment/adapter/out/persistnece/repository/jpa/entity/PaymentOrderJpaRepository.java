@@ -8,11 +8,16 @@ import org.springframework.data.repository.query.Param;
 public interface PaymentOrderJpaRepository extends JpaRepository<PaymentOrderJpaEntity, Long> {
 
     @Query("""
-            SELECT COALESCE(SUM(o.amount), 0) - COALESCE(p.discountAmount, 0)
+            SELECT 
+                CASE WHEN p.isBenefitApplied = true 
+                    THEN COALESCE(SUM(o.amount), 0) - COALESCE(MAX(b.discountAmount), 0) 
+                    ELSE COALESCE(SUM(o.amount), 0)
+                END
             FROM PaymentEventJpaEntity p
             JOIN PaymentOrderJpaEntity o ON p.id = o.paymentEvent.id
+            LEFT JOIN BenefitJpaEntity b ON p.id = b.payment.id
             WHERE p.orderId = :orderId
         """)
-    BigDecimal findActualPaymentAmount(@Param("orderId") String orderId);
+    BigDecimal findPaymentAmount(@Param("orderId") String orderId);
 
 }

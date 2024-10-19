@@ -1,6 +1,6 @@
 package com.qticket.payment;
 
-import com.qticket.payment.base.TestBase;
+import com.qticket.payment.config.base.TestBase;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

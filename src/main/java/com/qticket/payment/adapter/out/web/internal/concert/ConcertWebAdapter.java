@@ -21,6 +21,7 @@ public class ConcertWebAdapter implements LoadConcertPort {
     @Value("${feature.toggle.use.internal.concert-app:false}")
     private boolean useInternalClient;
 
+    // TODO 이름 변경 getReservation
     @Override
     public Reservation getTicket(Long customerId, String concertId) {
         if (useInternalClient) {

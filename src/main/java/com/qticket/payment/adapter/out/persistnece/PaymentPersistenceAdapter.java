@@ -3,6 +3,7 @@ package com.qticket.payment.adapter.out.persistnece;
 import com.qticket.payment.adapter.out.persistnece.repository.PaymentRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.PaymentStatusUpdateRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.PaymentValidationRepository;
+import com.qticket.payment.application.port.out.AppliedBenefitPort;
 import com.qticket.payment.application.port.out.PaymentStatusUpdatePort;
 import com.qticket.payment.application.port.out.PaymentValidationPort;
 import com.qticket.payment.application.port.out.SavePaymentPort;
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 @RequiredArgsConstructor
 public class PaymentPersistenceAdapter implements
-    SavePaymentPort, PaymentStatusUpdatePort, PaymentValidationPort {
+    SavePaymentPort, PaymentStatusUpdatePort, PaymentValidationPort, AppliedBenefitPort {
 
     private final PaymentRepository paymentRepository;
     private final PaymentStatusUpdateRepository paymentStatusUpdateRepository;
@@ -38,6 +39,11 @@ public class PaymentPersistenceAdapter implements
     @Override
     public void updatePaymentStatus(PaymentStatusUpdateCommand command) {
         paymentStatusUpdateRepository.updatePaymentOrderStatus(command);
+    }
+
+    @Override
+    public void updateBenefitApplied(String orderId) {
+        paymentRepository.updateBenefitApplied(orderId);
     }
 
 }

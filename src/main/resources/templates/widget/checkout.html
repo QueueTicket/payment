@@ -2,10 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="utf-8"/>
-  <link rel="icon" href="https://static.toss.im/icons/png/4x/icon-toss-logo.png"/>
-  <link rel="stylesheet" type="text/css" href="/style.css"/>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link href="https://static.toss.im/icons/png/4x/icon-toss-logo.png" rel="icon"/>
+  <link href="/style.css" rel="stylesheet" type="text/css"/>
+  <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>토스페이먼츠 결제화면</title>
   <!-- SDK 추가 -->
   <script src="https://js.tosspayments.com/v2/standard"></script>
@@ -22,8 +22,8 @@
     <!-- 쿠폰 체크박스 -->
     <div style="padding-left: 30px">
       <div class="checkable typography--p">
-        <label for="coupon-box" class="checkable__label typography--regular"
-        ><input id="coupon-box" class="checkable__input" type="checkbox" aria-checked="true"/>
+        <label class="checkable__label typography--regular" for="coupon-box"
+        ><input aria-checked="true" class="checkable__input" id="coupon-box" type="checkbox"/>
           <span class="checkable__label-text">[[${discountAmount}]]원 쿠폰 적용</span>
         </label>
 
@@ -90,6 +90,15 @@
     });
 
     button.addEventListener("click", async function () {
+      if (coupon.checked) {
+        const response = await fetch("/applied/coupon/" + orderId, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+      }
+
       await widgets.requestPayment({
         orderId: orderId,
         orderName: orderName,

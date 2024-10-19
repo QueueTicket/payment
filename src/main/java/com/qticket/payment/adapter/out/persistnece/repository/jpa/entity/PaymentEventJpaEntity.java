@@ -1,8 +1,10 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
+import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.confirm.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -10,8 +12,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +23,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
-@Table(name = "payment_event")
+@Table(name = "payment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PaymentEventJpaEntity {
 
@@ -33,34 +35,36 @@ public class PaymentEventJpaEntity {
     @OneToMany(mappedBy = "paymentEvent")
     private List<PaymentOrderJpaEntity> paymentOrders = new ArrayList<>();
 
+    @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)
+    private BenefitJpaEntity benefit;
+
     private Long customerId;
     private String orderId;
     private String orderName;
-    private String couponId;
-    private BigDecimal discountAmount;
+    private boolean isBenefitApplied = false;
     @Enumerated(EnumType.STRING)
     private PaymentMethod method;
-    private String paymentKey;
     private boolean isCompleted = false;
+    private String paymentKey;
+    private int failCount = 0;
     private LocalDateTime approvedAt;
-    private int failCount;
 
     private PaymentEventJpaEntity(
+        List<PaymentOrderJpaEntity> paymentOrderEntities,
+        BenefitJpaEntity benefit,
         Long customerId,
         String orderId,
         String orderName,
-        String couponId,
-        BigDecimal discountAmount,
-        PaymentMethod method,
-        List<PaymentOrderJpaEntity> paymentOrderEntities
+        PaymentMethod method
     ) {
+        this.paymentOrders = paymentOrderEntities;
+        this.benefit = benefit;
         this.customerId = customerId;
         this.orderId = orderId;
         this.orderName = orderName;
-        this.couponId = couponId;
-        this.discountAmount = discountAmount;
-        this.paymentOrders = paymentOrderEntities;
         this.method = method;
+
+        benefit.toPayment(this);
         paymentOrderEntities.forEach(it -> it.toPaymentEvent(this));
     }
 
@@ -68,25 +72,26 @@ public class PaymentEventJpaEntity {
         Long customerId,
         String orderId,
         String orderName,
-        String couponId,
-        BigDecimal amount,
-        PaymentMethod method,
-        List<PaymentOrder> paymentOrders
+        List<PaymentOrder> paymentOrders,
+        Coupon coupon,
+        PaymentMethod method
     ) {
+        // TODO 결제 항목 일급 컬렉션으로 이관
         List<PaymentOrderJpaEntity> paymentOrdersEntities = paymentOrders.stream()
             .map(PaymentOrder::toEntity)
             .toList();
+
         return new PaymentEventJpaEntity(
+            paymentOrdersEntities,
+            coupon.toEntity(),
             customerId,
             orderId,
             orderName,
-            couponId,
-            amount,
-            method,
-            paymentOrdersEntities
+            method
         );
     }
 
+    // TODO 일급 컬렉션으로 이관
     public List<PaymentOrderJpaEntity> extractChangeableProcessingOrders() {
         return paymentOrders.stream()
             .filter(PaymentOrderJpaEntity::isChangeableInProcessing)
@@ -106,6 +111,10 @@ public class PaymentEventJpaEntity {
 
     public void updatePaymentFailCount() {
         failCount += 1;
+    }
+
+    public void applyBenefit() {
+        this.isBenefitApplied = true;
     }
 
 }

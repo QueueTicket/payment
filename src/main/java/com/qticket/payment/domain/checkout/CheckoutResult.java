@@ -15,7 +15,7 @@ public record CheckoutResult(
             paymentEvent.orderId(),
             paymentEvent.orderName(),
             paymentEvent.totalAmount(),
-            paymentEvent.discountAmount()
+            paymentEvent.benefitAmount()
         );
     }
 

@@ -11,7 +11,6 @@ import com.qticket.payment.domain.checkout.Coupon;
 import com.qticket.payment.domain.checkout.Customer;
 import com.qticket.payment.domain.checkout.Reservation;
 import com.qticket.payment.domain.payment.PaymentEvent;
-import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,6 +24,13 @@ public class CheckoutService implements CheckoutUseCase {
     private final LoadConcertPort loadConcertPort;
     private final SavePaymentPort savePaymentPort;
 
+    /**
+     * TODO 목적에 따라 port명 변경
+     * loadConcertPort -> loadReservationPort
+     * loadCouponPort -> loadBenefitPort
+     * TODO 쿠폰 요청 없을 경우 제외 처리
+     * TODO 예매 확인을 위한 조회부 분리 loadReservation -> load*Port
+     */
     @Override
     public CheckoutResult checkout(CheckoutCommand command) {
         Customer customer = loadCustomerPort.getCustomer(command.customerId());
@@ -37,26 +43,22 @@ public class CheckoutService implements CheckoutUseCase {
         return CheckoutResult.of(paymentEvent);
     }
 
-
     private PaymentEvent createPaymentEvent(
         CheckoutCommand command,
         Customer customer,
         Reservation reservation,
         Coupon coupon
     ) {
-        return PaymentEvent.of(
+        return PaymentEvent.prepareEasyPayment(
             customer.id(),
             command.idempotencyKey(),
             reservation.seatNames(),
-            coupon.id(),
-            coupon.applicableDiscountAmount(reservation.totalPrice()),
-            PaymentMethod.EASY_PAY,
+            coupon,
             PaymentOrder.preOrder(
                 command.idempotencyKey(),
                 reservation
             )
         );
     }
-
 
 }

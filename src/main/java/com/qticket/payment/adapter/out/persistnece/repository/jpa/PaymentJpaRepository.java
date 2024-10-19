@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
+@Transactional
 @RequiredArgsConstructor
 public class PaymentJpaRepository implements PaymentRepository {
 
@@ -17,11 +18,16 @@ public class PaymentJpaRepository implements PaymentRepository {
     private final PaymentOrderJpaRepository paymentOrderJpaRepository;
 
     @Override
-    @Transactional
     public void save(PaymentEvent paymentEvent) {
         PaymentEventJpaEntity paymentEventJpaEntity = paymentEvent.toEntity();
         paymentEventJpaRepository.save(paymentEventJpaEntity);
         paymentOrderJpaRepository.saveAll(paymentEventJpaEntity.getPaymentOrders());
+    }
+
+    @Override
+    public void updateBenefitApplied(String orderId) {
+        PaymentEventJpaEntity payment = paymentEventJpaRepository.findByOrderId(orderId);
+        payment.applyBenefit();
     }
 
 }

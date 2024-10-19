@@ -29,12 +29,11 @@ public class PaymentOrderJpaEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(
-        name = "payment_event_id",
-        foreignKey = @ForeignKey(name = "FK_PAYMENT_ORDER_TO_PAYMENT_EVENT")
+        name = "payment_id",
+        foreignKey = @ForeignKey(name = "FK_ITEM_TO_PAYMENT")
     )
     private PaymentEventJpaEntity paymentEvent;
 
-    private Long customerId;
     private String orderId;
     private String concertId;
     private String seatId;
@@ -67,7 +66,6 @@ public class PaymentOrderJpaEntity {
 
     public void toPaymentEvent(PaymentEventJpaEntity paymentEventJpaEntity) {
         paymentEvent = paymentEventJpaEntity;
-        customerId = paymentEvent.getCustomerId();
     }
 
     public boolean isChangeableInProcessing() {
