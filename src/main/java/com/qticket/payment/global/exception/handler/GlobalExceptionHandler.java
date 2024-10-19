@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
         ApplicationErrorResponse errorResponse
     ) {
         eventPublisher.publishEvent(ThrowsExceptionEvent.of(exception, errorResponse));
-        
+
         return ResponseEntity.status(status).body(errorResponse);
     }
 

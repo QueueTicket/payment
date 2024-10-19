@@ -11,11 +11,9 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -31,8 +29,7 @@ public class PaymentJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "payment", cascade = CascadeType.PERSIST)
-    private List<PaymentItemJpaEntity> paymentItems = new ArrayList<>();
+    private PaymentItemCollection paymentItems;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)
     private BenefitJpaEntity benefit;
@@ -49,14 +46,14 @@ public class PaymentJpaEntity {
     private LocalDateTime approvedAt;
 
     private PaymentJpaEntity(
-        List<PaymentItemJpaEntity> paymentItemEntities,
+        PaymentItemCollection paymentItems,
         BenefitJpaEntity benefit,
         Long customerId,
         String orderId,
         String orderName,
         PaymentMethod method
     ) {
-        this.paymentItems = paymentItemEntities;
+        this.paymentItems = paymentItems;
         this.benefit = benefit;
         this.customerId = customerId;
         this.orderId = orderId;
@@ -66,7 +63,7 @@ public class PaymentJpaEntity {
         if (benefit != null) {
             benefit.toPayment(this);
         }
-        paymentItemEntities.forEach(it -> it.toPaymentEvent(this));
+        paymentItems.toPayment(this);
     }
 
     public static PaymentJpaEntity of(
@@ -77,15 +74,10 @@ public class PaymentJpaEntity {
         Benefit benefit,
         PaymentMethod method
     ) {
-        // TODO 결제 항목 일급 컬렉션으로 이관
-        List<PaymentItemJpaEntity> paymentItemEntities = paymentItems.stream()
-            .map(PaymentItem::toEntity)
-            .toList();
-
         BenefitJpaEntity benefitEntity = (benefit != null) ? benefit.toEntity() : null;
 
         return new PaymentJpaEntity(
-            paymentItemEntities,
+            PaymentItemCollection.of(paymentItems),
             benefitEntity,
             customerId,
             orderId,
@@ -94,11 +86,8 @@ public class PaymentJpaEntity {
         );
     }
 
-    // TODO 일급 컬렉션으로 이관
     public List<PaymentItemJpaEntity> extractChangeableProcessingOrders() {
-        return paymentItems.stream()
-            .filter(PaymentItemJpaEntity::isChangeableInProcessing)
-            .toList();
+        return paymentItems.extractChangeableProcessingOrders();
     }
 
     public void registerPaymentKey(String paymentKey) {
@@ -118,6 +107,10 @@ public class PaymentJpaEntity {
 
     public void applyBenefit() {
         this.isBenefitApplied = true;
+    }
+
+    public List<PaymentItemJpaEntity> getPaymentItems() {
+        return paymentItems.getElements();
     }
 
 }

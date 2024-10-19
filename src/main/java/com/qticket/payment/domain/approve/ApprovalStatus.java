@@ -5,7 +5,7 @@ import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public enum ApproveStatus {
+public enum ApprovalStatus {
     IN_PROGRESS("인증 완료 후 승인 대기"),
     WAITING_FOR_DEPOSIT("가상 계좌 입금 대기"),
     DONE("결제 승인 완료"),
@@ -14,13 +14,13 @@ public enum ApproveStatus {
     ABORTED("결제 승인 실패"),
     EXPIRED("30분 미입력으로 인한 거래 취소");
 
-    private static final Map<ApproveStatus, PaymentStatus> statusMap = Map.of(
+    private static final Map<ApprovalStatus, PaymentStatus> statusMap = Map.of(
         DONE, PaymentStatus.SUCCESS,
         ABORTED, PaymentStatus.FAILED
     );
     private final String description;
 
-    ApproveStatus(String description) {
+    ApprovalStatus(String description) {
         this.description = description;
     }
 

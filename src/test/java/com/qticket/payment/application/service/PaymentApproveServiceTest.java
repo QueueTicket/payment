@@ -10,7 +10,7 @@ import com.qticket.payment.adapter.out.web.external.payment.toss.response.confir
 import com.qticket.payment.application.port.in.CheckoutUseCase;
 import com.qticket.payment.application.port.in.command.PaymentApproveCommand;
 import com.qticket.payment.application.port.out.PaymentExecutionPort;
-import com.qticket.payment.domain.approve.ApproveStatus;
+import com.qticket.payment.domain.approve.ApprovalStatus;
 import com.qticket.payment.domain.approve.PaymentApproveResult;
 import com.qticket.payment.domain.approve.PaymentExecutionResult;
 import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
@@ -61,7 +61,7 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
         PaymentExecutionResult result = PaymentExecutionResult.of(
             paymentKey,
             orderId,
-            ApproveStatus.DONE,
+            ApprovalStatus.DONE,
             new ApproveDetails(
                 checkout.orderName(),
                 checkout.amount(),
@@ -108,7 +108,7 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
         PaymentExecutionResult result = PaymentExecutionResult.of(
             paymentKey,
             orderId,
-            ApproveStatus.ABORTED,
+            ApprovalStatus.ABORTED,
             null,
             new Failure("E0001", "잔액 부족")
         );
