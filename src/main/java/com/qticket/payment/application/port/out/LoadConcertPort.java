@@ -4,6 +4,6 @@ import com.qticket.payment.domain.checkout.Reservation;
 
 public interface LoadConcertPort {
 
-    Reservation getTicket(Long customerId, String concertId);
+    Reservation getReservation(Long customerId, String concertId);
 
 }

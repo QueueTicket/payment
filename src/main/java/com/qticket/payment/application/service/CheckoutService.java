@@ -35,7 +35,7 @@ public class CheckoutService implements CheckoutUseCase {
 
     private PaymentEvent checkoutReservationToPayment(CheckoutCommand command) {
         Customer customer = loadCustomerPort.getCustomer(command.customerId());
-        Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
+        Reservation reservation = loadConcertPort.getReservation(command.customerId(), command.concertId());
 
         if (command.hasNoCoupon()) {
             return createWithoutBenefitPayment(command, customer, reservation);

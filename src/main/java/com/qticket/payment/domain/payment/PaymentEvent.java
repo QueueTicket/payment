@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
 
-// TODO customer, order, benefit, paymentOrder : 도메인 정리, 분류별 객체화
 @Builder
 public record PaymentEvent(
     Long id,
