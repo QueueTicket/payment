@@ -23,7 +23,7 @@ public record PaymentEvent(
     //TODO PaymentBenefit benefits -> coupon id, discount amount,  policy ... etc
 ) {
 
-    public static PaymentEvent prepareEasyPayment(
+    public static PaymentEvent preparePayment(
         Long customerId,
         String orderId,
         String orderName,
@@ -35,6 +35,21 @@ public record PaymentEvent(
             .orderId(orderId)
             .orderName(orderName)
             .coupon(coupon)
+            .method(PaymentMethod.EASY_PAY)
+            .paymentOrders(paymentOrders)
+            .build();
+    }
+
+    public static PaymentEvent prepareWithoutCouponPayment(
+        Long customerId,
+        String orderId,
+        String orderName,
+        List<PaymentOrder> paymentOrders
+    ) {
+        return PaymentEvent.builder()
+            .customerId(customerId)
+            .orderId(orderId)
+            .orderName(orderName)
             .method(PaymentMethod.EASY_PAY)
             .paymentOrders(paymentOrders)
             .build();
@@ -58,6 +73,9 @@ public record PaymentEvent(
     }
 
     public BigDecimal benefitAmount() {
+        if (coupon == null) {
+            return BigDecimal.ZERO;
+        }
         return coupon.benefitAmount();
     }
 

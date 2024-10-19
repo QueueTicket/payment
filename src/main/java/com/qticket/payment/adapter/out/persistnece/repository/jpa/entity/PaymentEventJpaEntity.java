@@ -64,7 +64,9 @@ public class PaymentEventJpaEntity {
         this.orderName = orderName;
         this.method = method;
 
-        benefit.toPayment(this);
+        if (benefit != null) {
+            benefit.toPayment(this);
+        }
         paymentOrderEntities.forEach(it -> it.toPaymentEvent(this));
     }
 
@@ -77,13 +79,15 @@ public class PaymentEventJpaEntity {
         PaymentMethod method
     ) {
         // TODO 결제 항목 일급 컬렉션으로 이관
-        List<PaymentOrderJpaEntity> paymentOrdersEntities = paymentOrders.stream()
+        List<PaymentOrderJpaEntity> paymentOrderEntities = paymentOrders.stream()
             .map(PaymentOrder::toEntity)
             .toList();
 
+        BenefitJpaEntity benefitEntity = (coupon != null) ? coupon.toEntity() : null;
+
         return new PaymentEventJpaEntity(
-            paymentOrdersEntities,
-            coupon.toEntity(),
+            paymentOrderEntities,
+            benefitEntity,
             customerId,
             orderId,
             orderName,

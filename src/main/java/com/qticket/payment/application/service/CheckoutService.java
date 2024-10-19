@@ -24,23 +24,24 @@ public class CheckoutService implements CheckoutUseCase {
     private final LoadConcertPort loadConcertPort;
     private final SavePaymentPort savePaymentPort;
 
-    /**
-     * TODO 목적에 따라 port명 변경
-     * loadConcertPort -> loadReservationPort
-     * loadCouponPort -> loadBenefitPort
-     * TODO 쿠폰 요청 없을 경우 제외 처리
-     * TODO 예매 확인을 위한 조회부 분리 loadReservation -> load*Port
-     */
     @Override
     public CheckoutResult checkout(CheckoutCommand command) {
-        Customer customer = loadCustomerPort.getCustomer(command.customerId());
-        Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
-        Coupon coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
-
-        PaymentEvent paymentEvent = createPaymentEvent(command, customer, reservation, coupon);
+        PaymentEvent paymentEvent = checkoutReservationToPayment(command);
         savePaymentPort.save(paymentEvent);
 
         return CheckoutResult.of(paymentEvent);
+    }
+
+    private PaymentEvent checkoutReservationToPayment(CheckoutCommand command) {
+        Customer customer = loadCustomerPort.getCustomer(command.customerId());
+        Reservation reservation = loadConcertPort.getTicket(command.customerId(), command.concertId());
+
+        if (command.hasNoCoupon()) {
+            return createWithoutCouponPayment(command, customer, reservation);
+        }
+
+        Coupon coupon = loadCouponPort.getCoupon(command.couponId(), reservation);
+        return createPaymentEvent(command, customer, reservation, coupon);
     }
 
     private PaymentEvent createPaymentEvent(
@@ -49,11 +50,27 @@ public class CheckoutService implements CheckoutUseCase {
         Reservation reservation,
         Coupon coupon
     ) {
-        return PaymentEvent.prepareEasyPayment(
+        return PaymentEvent.preparePayment(
             customer.id(),
             command.idempotencyKey(),
             reservation.seatNames(),
             coupon,
+            PaymentOrder.preOrder(
+                command.idempotencyKey(),
+                reservation
+            )
+        );
+    }
+
+    private PaymentEvent createWithoutCouponPayment(
+        CheckoutCommand command,
+        Customer customer,
+        Reservation reservation
+    ) {
+        return PaymentEvent.prepareWithoutCouponPayment(
+            customer.id(),
+            command.idempotencyKey(),
+            reservation.seatNames(),
             PaymentOrder.preOrder(
                 command.idempotencyKey(),
                 reservation

@@ -12,4 +12,8 @@ public record CheckoutCommand(
     String idempotencyKey
 ) {
 
+    public boolean hasNoCoupon() {
+        return couponId == null || couponId.isEmpty();
+    }
+
 }

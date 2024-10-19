@@ -23,10 +23,13 @@
     <div style="padding-left: 30px">
       <div class="checkable typography--p">
         <label class="checkable__label typography--regular" for="coupon-box"
-        ><input aria-checked="true" class="checkable__input" id="coupon-box" type="checkbox"/>
-          <span class="checkable__label-text">[[${discountAmount}]]원 쿠폰 적용</span>
+        ><input aria-checked="true"
+                class="checkable__input"
+                id="coupon-box"
+                th:attr="disabled=${discountAmount == null || discountAmount == 0}"
+                type="checkbox"/>
+          <span class="checkable__label-text" th:if="${discountAmount != 0}">[[${discountAmount}]]원 쿠폰 적용</span>
         </label>
-
 
       </div>
     </div>

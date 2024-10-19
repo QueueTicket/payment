@@ -15,7 +15,7 @@ class PaymentOrderJpaRepositoryTest extends PaymentRepositoryTestHelper {
     @DisplayName("혜택이 적용된 결제 금액 조회")
     void findPaymentAmount() {
         // Given
-        PaymentEvent paymentEvent = PaymentEvent.prepareEasyPayment(
+        PaymentEvent paymentEvent = PaymentEvent.preparePayment(
             customerId,
             orderId,
             reservation.seatNames(),
@@ -42,7 +42,7 @@ class PaymentOrderJpaRepositoryTest extends PaymentRepositoryTestHelper {
     @DisplayName("혜택이 적용되지 않은 결제 금액 조회")
     void findPaymentAmount2() {
         // Given
-        PaymentEvent paymentEvent = PaymentEvent.prepareEasyPayment(
+        PaymentEvent paymentEvent = PaymentEvent.preparePayment(
             customerId,
             orderId,
             reservation.seatNames(),

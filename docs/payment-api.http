@@ -7,3 +7,9 @@ GET http://localhost:8080/checkout
 Content-Type: application/json
 
 ###
+# @name 쿠폰 없는 결제 요청
+GET http://localhost:8080/checkout
+    ?customerId=12
+    &concertId=concert-a
+    &seatIds=1
+Content-Type: application/json
