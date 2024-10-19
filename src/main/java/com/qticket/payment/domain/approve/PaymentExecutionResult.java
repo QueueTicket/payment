@@ -3,7 +3,7 @@ package com.qticket.payment.domain.approve;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentStatus;
-import com.qticket.payment.exception.domain.NotValidConfirmedStatusException;
+import com.qticket.payment.exception.domain.InValidApprovalStatusException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.AccessLevel;
@@ -53,7 +53,7 @@ public class PaymentExecutionResult {
 
     private void validateStatus() {
         if (!approvalStatus.isValidConfirmCompletedStatus()) {
-            throw new NotValidConfirmedStatusException(paymentKey, orderId, approvalStatus);
+            throw new InValidApprovalStatusException(paymentKey, orderId, approvalStatus);
         }
     }
 

@@ -1,6 +1,7 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import com.qticket.payment.domain.payment.PaymentStatus;
+import com.qticket.payment.exception.persistence.AlreadyTerminatedPayment;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -40,8 +41,8 @@ public class PaymentItemJpaEntity {
     private BigDecimal amount;
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
-    private boolean isLedgerCompleted = false;
-    private boolean isSettlementCompleted = false;
+    private final boolean isLedgerCompleted = false;
+    private final boolean isSettlementCompleted = false;
 
     private PaymentItemJpaEntity(
         String orderId,
@@ -73,7 +74,9 @@ public class PaymentItemJpaEntity {
     }
 
     public void checkIsChangeableInProcessing() {
-        status.checkIsChangeableInProcessing();
+        if (status.isNotChangeableInProcessing()) {
+            throw new AlreadyTerminatedPayment(orderId, status);
+        }
     }
 
     public void updateStatus(PaymentStatus newStatus) {

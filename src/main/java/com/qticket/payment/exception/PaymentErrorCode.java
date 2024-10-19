@@ -4,10 +4,14 @@ import com.qticket.payment.global.exception.response.code.ErrorCode;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
-// TODO 상세 오류 메세지 출력을 위한 파라미터 수신 처리 추가
 @Getter
 public enum PaymentErrorCode implements ErrorCode {
-    INVALID_PAYMENT_AMOUNT(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 금액과 주문 금액이 일치하지 않습니다.");
+    INVALID_PAYMENT_AMOUNT(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 금액과 주문 금액이 일치하지 않습니다."),
+    INVALID_APPROVAL_STATUS(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 상태가 올바르지 않습니다."),
+    ALREADY_TERMINATED_ORDER(HttpStatus.BAD_REQUEST, "이미 종료된 주문 입니다."),
+    ALREADY_PAYMENT_STATUS(HttpStatus.BAD_REQUEST, "결제 상태가 올바르지 않습니다."),
+    MISSING_APPROVE_DETAILS(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 상세 정보가 누락되었습니다."),
+    ;
 
     private final HttpStatus status;
     private final String message;

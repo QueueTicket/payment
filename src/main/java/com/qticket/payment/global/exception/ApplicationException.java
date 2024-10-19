@@ -9,8 +9,8 @@ public class ApplicationException extends RuntimeException {
 
     private final ErrorCode errorCode;
 
-    public ApplicationException(ErrorCode errorCode) {
-        super(errorCode.getMessage());
+    public ApplicationException(ErrorCode errorCode, String message) {
+        super(message);
         this.errorCode = errorCode;
     }
 
@@ -20,6 +20,10 @@ public class ApplicationException extends RuntimeException {
 
     public HttpStatus getStatus() {
         return errorCode.getStatus();
+    }
+
+    protected static String formattingErrorMessage(String messageFormat, Object... objects) {
+        return messageFormat.formatted(objects);
     }
 
 }

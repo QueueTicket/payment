@@ -18,7 +18,7 @@ import com.qticket.payment.application.port.out.command.PaymentStatusUpdateComma
 import com.qticket.payment.domain.payment.PaymentEvent;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.application.InValidPaymentStatusException;
-import com.qticket.payment.exception.persistence.AmountNotValidException;
+import com.qticket.payment.exception.persistence.InValidAmountException;
 import java.math.BigDecimal;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -79,7 +79,7 @@ public class PaymentPersistenceAdapter implements
     public void isValidPaymentAmount(String orderId, Long amount) {
         BigDecimal totalAmount = paymentItemJpaRepository.findPaymentAmount(orderId);
         if (isTotalAmountNotMatched(amount, totalAmount)) {
-            throw new AmountNotValidException(orderId, amount, totalAmount);
+            throw new InValidAmountException(orderId, amount, totalAmount);
         }
     }
 

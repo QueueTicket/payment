@@ -15,20 +15,20 @@ public class ThrowsExceptionEventListener {
     public void onThrowsExceptionLogging(ThrowsExceptionEvent throwsExceptionEvent) {
         Exception exception = throwsExceptionEvent.getException();
         ApplicationErrorResponse response = throwsExceptionEvent.getResponse();
-
         log.error("""
-                             \s
-                             REQUEST :[{}, {} {}]
-                             RESPONSE :[{}, {}]
-                             EXCEPTION :[{}, {}]
-                             TRACE :[{}]
+                \s
+                    - METHOD: {}
+                    - PATH: {}
+                    - CODE: {}
+                    - MESSAGE: {}
+                    - EXCEPTION: {}, {}
+                    - TRACE : {}
                 \s""",
-            response.getMessage(),
             response.getMethod(),
             response.getPath(),
             response.getCode(),
             response.getMessage(),
-            exception.getClass().getName(),
+            exception.getClass().getSimpleName(),
             exception.getMessage(),
             throwsExceptionEvent.formatStackTrace()
         );

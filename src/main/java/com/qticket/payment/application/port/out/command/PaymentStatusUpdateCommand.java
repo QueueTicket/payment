@@ -5,7 +5,7 @@ import com.qticket.payment.domain.approve.PaymentExecutionResult;
 import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.application.InValidPaymentStatusException;
-import com.qticket.payment.exception.application.MissingApproveCompleteDetailsException;
+import com.qticket.payment.exception.application.MissingApproveDetailsException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -49,12 +49,12 @@ public class PaymentStatusUpdateCommand {
         switch (status) {
             case SUCCESS -> {
                 if (approveDetails == null) {
-                    throw new MissingApproveCompleteDetailsException(paymentKey, orderId, status);
+                    throw new MissingApproveDetailsException(paymentKey, orderId, status);
                 }
             }
             case FAILED -> {
                 if (failure == null) {
-                    throw new MissingApproveCompleteDetailsException(paymentKey, orderId, status);
+                    throw new MissingApproveDetailsException(paymentKey, orderId, status);
                 }
             }
             case UNKNOWN_APPROVE -> {

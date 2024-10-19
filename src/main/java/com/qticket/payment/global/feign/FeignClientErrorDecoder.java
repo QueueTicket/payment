@@ -5,6 +5,7 @@ import static org.apache.commons.lang.StringUtils.EMPTY;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qticket.payment.global.exception.InternalClientException;
 import com.qticket.payment.global.exception.response.ApplicationErrorResponse;
+import com.qticket.payment.global.exception.response.code.InternalClientErrorCode;
 import feign.Request;
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -57,12 +58,12 @@ public class FeignClientErrorDecoder {
 
         log.error(""" 
                 \s
-                    Request Fail: {}
-                    URL: {} {}
-                    Status: {}
-                    Request Header: {}
-                    Request Body: {}
-                    Response Body: {}
+                    - Request Fail: {}
+                    - URL: {} {}
+                    - Status: {}
+                    - Request Header: {}
+                    - Request Body: {}
+                    - Response Body: {}
                 \s""",
             methodKey,
             request.httpMethod(),

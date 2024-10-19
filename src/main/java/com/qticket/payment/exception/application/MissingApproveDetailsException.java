@@ -4,11 +4,11 @@ import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.PaymentErrorCode;
 import com.qticket.payment.global.exception.ApplicationException;
 
-public class InValidPaymentStatusException extends ApplicationException {
+public class MissingApproveDetailsException extends ApplicationException {
 
-    private static final String MESSAGE_FORMAT = "결제 상태가 올바르지 않습니다. [paymentKey: %s, orderId: %s] : %s";
+    private static final String MESSAGE_FORMAT = "결제 승인 상세 정보가 누락되었습니다.[%s, %s] : %s";
 
-    public InValidPaymentStatusException(String paymentKey, String orderId, PaymentStatus status) {
+    public MissingApproveDetailsException(String paymentKey, String orderId, PaymentStatus status) {
         super(
             PaymentErrorCode.ALREADY_TERMINATED_ORDER,
             formattingErrorMessage(MESSAGE_FORMAT, paymentKey, orderId, status)
