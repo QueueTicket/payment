@@ -1,7 +1,7 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
+import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.checkout.Coupon;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentOrder;
 import jakarta.persistence.CascadeType;

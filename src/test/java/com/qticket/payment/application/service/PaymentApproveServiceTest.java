@@ -8,13 +8,13 @@ import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.Payment
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaEntity;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
-import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
+import com.qticket.payment.application.port.in.command.PaymentApproveCommand;
 import com.qticket.payment.application.port.out.PaymentExecutionPort;
+import com.qticket.payment.domain.approve.ConfirmStatus;
+import com.qticket.payment.domain.approve.PaymentApproveResult;
+import com.qticket.payment.domain.approve.PaymentExecutionResult;
+import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.checkout.CheckoutResult;
-import com.qticket.payment.domain.confirm.ConfirmStatus;
-import com.qticket.payment.domain.confirm.PaymentConfirmResult;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import java.math.BigDecimal;
@@ -25,33 +25,33 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import reactor.core.publisher.Mono;
 
-@DisplayName("Service:PaymentConfirm")
-class PaymentConfirmServiceTest extends PaymentTestHelper {
+@DisplayName("Service:PaymentApprove")
+class PaymentApproveServiceTest extends PaymentTestHelper {
 
     private final CheckoutUseCase checkoutUseCase;
     private final AppliedCouponService appliedCouponService;
-    private final PaymentConfirmService paymentConfirmService;
+    private final PaymentApproveService paymentConfirmService;
 
     @SpyBean
     private PaymentExecutionPort paymentExecutionPort;
 
-    public PaymentConfirmServiceTest(
+    public PaymentApproveServiceTest(
         CheckoutUseCase checkoutUseCase,
         AppliedCouponService appliedCouponService,
-        PaymentConfirmService paymentConfirmService
+        PaymentApproveService paymentApproveService
     ) {
         this.checkoutUseCase = checkoutUseCase;
         this.appliedCouponService = appliedCouponService;
-        this.paymentConfirmService = paymentConfirmService;
+        this.paymentConfirmService = paymentApproveService;
     }
 
     @Test
     @DisplayName("쿠폰 적용 시 결제 승인 성공")
-    void paymentConfirmSuccess() {
+    void paymentApproveSuccess() {
         // Given
         CheckoutResult checkout = checkoutUseCase.checkout(checkoutCommand);
         String paymentKey = UUID.randomUUID().toString();
-        PaymentConfirmCommand given = new PaymentConfirmCommand(
+        PaymentApproveCommand given = new PaymentApproveCommand(
             paymentKey,
             orderId,
             checkout.actualPaymentAmount().longValue()
@@ -74,7 +74,7 @@ class PaymentConfirmServiceTest extends PaymentTestHelper {
         appliedCouponService.appliedCoupon(orderId);
 
         // When
-        PaymentConfirmResult actual = paymentConfirmService.confirm(given).block();
+        PaymentApproveResult actual = paymentConfirmService.approve(given).block();
         PaymentEventJpaEntity paymentEvent = paymentEventJpaRepository.findByOrderId(orderId);
 
         // Then
@@ -95,11 +95,11 @@ class PaymentConfirmServiceTest extends PaymentTestHelper {
 
     @Test
     @DisplayName("결제 승인 실패")
-    void paymentConfirmFailed() {
+    void paymentApproveFailed() {
         // Given
         CheckoutResult checkout = checkoutUseCase.checkout(checkoutCommand);
         String paymentKey = UUID.randomUUID().toString();
-        PaymentConfirmCommand given = new PaymentConfirmCommand(
+        PaymentApproveCommand given = new PaymentApproveCommand(
             paymentKey,
             orderId,
             checkout.actualPaymentAmount().longValue()
@@ -116,7 +116,7 @@ class PaymentConfirmServiceTest extends PaymentTestHelper {
         appliedCouponService.appliedCoupon(orderId);
 
         // When
-        PaymentConfirmResult actual = paymentConfirmService.confirm(given).block();
+        PaymentApproveResult actual = paymentConfirmService.approve(given).block();
         PaymentEventJpaEntity paymentEvent = paymentEventJpaRepository.findByOrderId(orderId);
         paymentEvent.applyBenefit();
 

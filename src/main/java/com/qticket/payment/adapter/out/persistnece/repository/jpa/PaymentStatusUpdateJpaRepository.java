@@ -22,9 +22,9 @@ public class PaymentStatusUpdateJpaRepository implements PaymentStatusUpdateRepo
     private final PaymentEventJpaRepository paymentEventJpaRepository;
     private final PaymentOrderHistoryJpaRepository paymentOrderHistoryJpaRepository;
 
-    private final String REASON_TO_PAYMENT_CONFIRM_STARTED = "PAYMENT_CONFIRM_STARTED";
-    private final String REASON_TO_PAYMENT_CONFIRM_SUCCESS = "PAYMENT_CONFIRM_SUCCESS";
-    private final String REASON_TO_PAYMENT_CONFIRM_UNKNOWN = "PAYMENT_CONFIRM_UNKNOWN";
+    private final String REASON_TO_PAYMENT_APPROVE_STARTED = "PAYMENT_APPROVE_STARTED";
+    private final String REASON_TO_PAYMENT_APPROVE_SUCCESS = "PAYMENT_APPROVE_SUCCESS";
+    private final String REASON_TO_PAYMENT_APPROVE_UNKNOWN = "PAYMENT_APPROVE_UNKNOWN";
 
     @Override
     public void updatePaymentOrderStatusToProcessing(String orderId, String paymentKey) {
@@ -34,7 +34,7 @@ public class PaymentStatusUpdateJpaRepository implements PaymentStatusUpdateRepo
         checkIsChangeableInProcessingPaymentOrder(paymentOrders);
         registerPaymentKey(paymentEvent, paymentKey);
         updateStatus(paymentOrders, PaymentStatus.PROCESSING);
-        saveChangePaymentStatusHistory(paymentOrders, PaymentStatus.PROCESSING, REASON_TO_PAYMENT_CONFIRM_STARTED);
+        saveChangePaymentStatusHistory(paymentOrders, PaymentStatus.PROCESSING, REASON_TO_PAYMENT_APPROVE_STARTED);
     }
 
     private void registerPaymentKey(PaymentEventJpaEntity paymentEvent, String paymentKey) {
@@ -84,7 +84,7 @@ public class PaymentStatusUpdateJpaRepository implements PaymentStatusUpdateRepo
 
         paymentEvent.updatePaymentDetails(command.getApproveDetails());
         updateStatus(paymentOrders, command.getStatus());
-        saveChangePaymentStatusHistory(paymentOrders, command.getStatus(), REASON_TO_PAYMENT_CONFIRM_SUCCESS);
+        saveChangePaymentStatusHistory(paymentOrders, command.getStatus(), REASON_TO_PAYMENT_APPROVE_SUCCESS);
     }
 
     private void updatePaymentStatusToFailed(
@@ -104,7 +104,7 @@ public class PaymentStatusUpdateJpaRepository implements PaymentStatusUpdateRepo
     ) {
         List<PaymentOrderJpaEntity> paymentOrders = paymentEvent.getPaymentOrders();
         updateStatus(paymentOrders, command.getStatus());
-        saveChangePaymentStatusHistory(paymentOrders, command.getStatus(), REASON_TO_PAYMENT_CONFIRM_UNKNOWN);
+        saveChangePaymentStatusHistory(paymentOrders, command.getStatus(), REASON_TO_PAYMENT_APPROVE_UNKNOWN);
     }
 
 }

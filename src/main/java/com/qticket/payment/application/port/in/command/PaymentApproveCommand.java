@@ -1,6 +1,6 @@
 package com.qticket.payment.application.port.in.command;
 
-public record PaymentConfirmCommand(
+public record PaymentApproveCommand(
     String paymentKey,
     String orderId,
     Long amount

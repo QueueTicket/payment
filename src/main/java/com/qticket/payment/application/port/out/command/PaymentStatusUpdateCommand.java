@@ -1,11 +1,11 @@
 package com.qticket.payment.application.port.out.command;
 
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult.ApproveDetails;
+import com.qticket.payment.domain.approve.PaymentExecutionResult;
+import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.application.InValidPaymentStatusException;
-import com.qticket.payment.exception.application.MissingConfirmCompleteDetailsException;
+import com.qticket.payment.exception.application.MissingApproveCompleteDetailsException;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,25 +35,6 @@ public class PaymentStatusUpdateCommand {
         validateDetailsByStatus();
     }
 
-    private void validateDetailsByStatus() {
-        switch (status) {
-            case SUCCESS -> {
-                if (approveDetails == null) {
-                    throw new MissingConfirmCompleteDetailsException(paymentKey, orderId, status);
-                }
-            }
-            case FAILED -> {
-                if (failure == null) {
-                    throw new MissingConfirmCompleteDetailsException(paymentKey, orderId, status);
-                }
-            }
-            case UNKNOWN_APPROVE -> {
-
-            }
-            default -> throw new InValidPaymentStatusException(paymentKey, orderId, status);
-        }
-    }
-
     public static PaymentStatusUpdateCommand from(PaymentExecutionResult result) {
         return new PaymentStatusUpdateCommand(
             result.getPaymentKey(),
@@ -62,6 +43,25 @@ public class PaymentStatusUpdateCommand {
             result.getConfirmDetails(),
             result.getFailure()
         );
+    }
+
+    private void validateDetailsByStatus() {
+        switch (status) {
+            case SUCCESS -> {
+                if (approveDetails == null) {
+                    throw new MissingApproveCompleteDetailsException(paymentKey, orderId, status);
+                }
+            }
+            case FAILED -> {
+                if (failure == null) {
+                    throw new MissingApproveCompleteDetailsException(paymentKey, orderId, status);
+                }
+            }
+            case UNKNOWN_APPROVE -> {
+
+            }
+            default -> throw new InValidPaymentStatusException(paymentKey, orderId, status);
+        }
     }
 
 }

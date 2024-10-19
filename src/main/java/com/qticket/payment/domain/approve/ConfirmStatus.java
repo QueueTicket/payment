@@ -1,4 +1,4 @@
-package com.qticket.payment.domain.confirm;
+package com.qticket.payment.domain.approve;
 
 import com.qticket.payment.domain.payment.PaymentStatus;
 import java.util.Map;
@@ -14,12 +14,11 @@ public enum ConfirmStatus {
     ABORTED("결제 승인 실패"),
     EXPIRED("30분 미입력으로 인한 거래 취소");
 
-    private final String description;
-    
     private static final Map<ConfirmStatus, PaymentStatus> statusMap = Map.of(
         DONE, PaymentStatus.SUCCESS,
         ABORTED, PaymentStatus.FAILED
     );
+    private final String description;
 
     ConfirmStatus(String description) {
         this.description = description;

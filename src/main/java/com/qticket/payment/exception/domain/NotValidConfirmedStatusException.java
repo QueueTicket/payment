@@ -1,6 +1,6 @@
 package com.qticket.payment.exception.domain;
 
-import com.qticket.payment.domain.confirm.ConfirmStatus;
+import com.qticket.payment.domain.approve.ConfirmStatus;
 
 public class NotValidConfirmedStatusException extends RuntimeException {
 

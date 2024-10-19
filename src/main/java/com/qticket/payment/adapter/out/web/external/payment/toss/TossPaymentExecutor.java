@@ -4,10 +4,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.qticket.payment.adapter.out.web.external.payment.executor.PaymentExecutor;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.TossPaymentConfirmResponse;
-import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
-import com.qticket.payment.domain.confirm.ConfirmStatus;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult;
-import com.qticket.payment.domain.confirm.PaymentExecutionResult.ApproveDetails;
+import com.qticket.payment.application.port.in.command.PaymentApproveCommand;
+import com.qticket.payment.domain.approve.ConfirmStatus;
+import com.qticket.payment.domain.approve.PaymentExecutionResult;
+import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -27,7 +27,7 @@ public class TossPaymentExecutor implements PaymentExecutor {
     private final String IDEMPOTENCY_KEY_HEADER_KEY = "idempotency-Key";
 
     @Override
-    public Mono<PaymentExecutionResult> execute(PaymentConfirmCommand command) {
+    public Mono<PaymentExecutionResult> execute(PaymentApproveCommand command) {
         try {
             return tossPaymentsWebClient.post()
                 .uri(CONFIRM_URI)

@@ -1,6 +1,6 @@
 package com.qticket.payment.adapter.in.web.api.request;
 
-import com.qticket.payment.application.port.in.command.PaymentConfirmCommand;
+import com.qticket.payment.application.port.in.command.PaymentApproveCommand;
 
 public record TossPaymentConfirmRequest(
     String paymentKey,
@@ -8,8 +8,8 @@ public record TossPaymentConfirmRequest(
     Long amount
 ) {
 
-    public PaymentConfirmCommand toCommand() {
-        return new PaymentConfirmCommand(paymentKey, orderId, amount);
+    public PaymentApproveCommand toCommand() {
+        return new PaymentApproveCommand(paymentKey, orderId, amount);
     }
 
 }

@@ -1,4 +1,4 @@
-package com.qticket.payment.domain.confirm;
+package com.qticket.payment.domain.approve;
 
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.TossPaymentConfirmResponse;

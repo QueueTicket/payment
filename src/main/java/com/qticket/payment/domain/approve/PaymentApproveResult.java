@@ -1,20 +1,20 @@
-package com.qticket.payment.domain.confirm;
+package com.qticket.payment.domain.approve;
 
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.application.InValidPaymentStatusException;
 
-public record PaymentConfirmResult(
+public record PaymentApproveResult(
     PaymentStatus paymentStatus,
     Failure failure,
     String message
 ) {
 
-    public static PaymentConfirmResult of(
+    public static PaymentApproveResult of(
         PaymentExecutionResult result
     ) {
         String message = createMessageByStatus(result);
-        return new PaymentConfirmResult(result.getpaymentStatus(), result.getFailure(), message);
+        return new PaymentApproveResult(result.getpaymentStatus(), result.getFailure(), message);
     }
 
     private static String createMessageByStatus(PaymentExecutionResult result) {
