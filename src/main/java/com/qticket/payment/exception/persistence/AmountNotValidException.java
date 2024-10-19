@@ -1,4 +1,4 @@
-package com.qticket.payment.adapter.out.persistnece.exception;
+package com.qticket.payment.exception.persistence;
 
 import com.qticket.payment.exception.PaymentErrorCode;
 import com.qticket.payment.global.exception.ApplicationException;

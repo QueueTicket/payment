@@ -1,8 +1,8 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa;
 
-import com.qticket.payment.adapter.out.persistnece.exception.AmountNotValidException;
 import com.qticket.payment.adapter.out.persistnece.repository.PaymentValidationRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentOrderJpaRepository;
+import com.qticket.payment.exception.persistence.AmountNotValidException;
 import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
