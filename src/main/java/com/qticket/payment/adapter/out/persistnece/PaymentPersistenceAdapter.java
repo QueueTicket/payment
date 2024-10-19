@@ -47,7 +47,7 @@ public class PaymentPersistenceAdapter implements
 
         checkIsChangeableInProcessingPaymentItem(paymentItems);
         registerPaymentKey(paymentEvent, paymentKey);
-        updateStatus(paymentItems, PaymentStatus.PROCESSING, PAYMENT_APPROVE_STARTED.getDescription());
+        updatePaymentStatus(paymentItems, PaymentStatus.PROCESSING, PAYMENT_APPROVE_STARTED.getDescription());
     }
 
     private void registerPaymentKey(PaymentJpaEntity paymentEvent, String paymentKey) {
@@ -70,9 +70,9 @@ public class PaymentPersistenceAdapter implements
         paymentItemHistoryJpaRepository.saveAll(histories);
     }
 
-    public void updateStatus(List<PaymentItemJpaEntity> paymentItems, PaymentStatus status, String reason) {
-        paymentItems.forEach(it -> it.updateStatus(status));
-        saveChangePaymentStatusHistory(paymentItems, status, reason);
+    public void updatePaymentStatus(List<PaymentItemJpaEntity> paymentItems, PaymentStatus newStatus, String reason) {
+        saveChangePaymentStatusHistory(paymentItems, newStatus, reason);
+        paymentItems.forEach(it -> it.updateStatus(newStatus));
     }
 
     @Override
@@ -109,7 +109,7 @@ public class PaymentPersistenceAdapter implements
     ) {
         List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
         paymentEvent.updatePaymentDetails(command.getApproveDetails());
-        updateStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_SUCCESS.getDescription());
+        updatePaymentStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_SUCCESS.getDescription());
     }
 
     private void updatePaymentStatusToFailed(
@@ -118,7 +118,7 @@ public class PaymentPersistenceAdapter implements
     ) {
         List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
         paymentEvent.updatePaymentFailCount();
-        updateStatus(paymentItems, command.getStatus(), command.getFailure().message());
+        updatePaymentStatus(paymentItems, command.getStatus(), command.getFailure().message());
     }
 
     private void updatePaymentStatusToUnknown(
@@ -126,7 +126,7 @@ public class PaymentPersistenceAdapter implements
         PaymentStatusUpdateCommand command
     ) {
         List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
-        updateStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_UNKNOWN.getDescription());
+        updatePaymentStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_UNKNOWN.getDescription());
     }
 
     @Override
