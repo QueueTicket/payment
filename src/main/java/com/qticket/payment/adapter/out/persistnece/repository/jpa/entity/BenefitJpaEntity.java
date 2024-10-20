@@ -1,5 +1,6 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
+import com.qticket.payment.global.jpa.CreatedAuditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.ForeignKey;
@@ -25,7 +26,7 @@ import lombok.NoArgsConstructor;
     )
 )
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class BenefitJpaEntity {
+public class BenefitJpaEntity extends CreatedAuditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

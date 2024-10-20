@@ -4,6 +4,7 @@ import com.qticket.payment.domain.approve.PaymentExecutionResult.ApproveDetails;
 import com.qticket.payment.domain.checkout.Benefit;
 import com.qticket.payment.domain.payment.PaymentItem;
 import com.qticket.payment.domain.payment.PaymentMethod;
+import com.qticket.payment.global.jpa.Auditable;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -24,7 +25,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "payment")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentJpaEntity {
+public class PaymentJpaEntity extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,15 +1,17 @@
 CREATE TABLE payment
 (
-    id                 BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '결제 ID',
-    customer_id        BIGINT       NOT NULL COMMENT '결제 사용자 ID',
-    order_id           VARCHAR(255) UNIQUE COMMENT '예약 정보와 UUID를 기반으로 Application에서 생성된 주문 ID',
-    order_name         VARCHAR(255) NOT NULL COMMENT '예약 정보를 기반으로 생성된 주문 명',
-    is_benefit_applied BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '할인 적용 여부',
-    method             ENUM ('CARD','EASY_PAY','TRANSFER') NOT NULL COMMENT '결제 수단',
-    is_completed       BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '결제 승인 완료 여부',
-    payment_key        VARCHAR(255) UNIQUE COMMENT 'PG 승인 후 반환되는 KEY',
-    fail_count         INT          NOT NULL DEFAULT 0 COMMENT '결제 실패 횟수',
-    approved_at        DATETIME COMMENT 'PG 승인 일시'
+    id                  BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '결제 ID',
+    customer_id         BIGINT       NOT NULL COMMENT '결제 사용자 ID',
+    order_id            VARCHAR(255) UNIQUE COMMENT '예약 정보와 UUID를 기반으로 Application에서 생성된 주문 ID',
+    order_name          VARCHAR(255) NOT NULL COMMENT '예약 정보를 기반으로 생성된 주문 명',
+    is_benefit_applied  BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '할인 적용 여부',
+    method              ENUM ('CARD','EASY_PAY','TRANSFER') NOT NULL COMMENT '결제 수단',
+    is_completed        BOOLEAN      NOT NULL DEFAULT FALSE COMMENT '결제 승인 완료 여부',
+    payment_key         VARCHAR(255) UNIQUE COMMENT 'PG 승인 후 반환되는 KEY',
+    fail_count          INT          NOT NULL DEFAULT 0 COMMENT '결제 실패 횟수',
+    approved_at         DATETIME COMMENT 'PG 승인 일시',
+    created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
+    updated_at          DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '수정 일시'
 ) engine = InnoDB;
 
 CREATE TABLE payment_item
@@ -23,6 +25,8 @@ CREATE TABLE payment_item
     status                  ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FAILED', 'UNKNOWN_APPROVE') NOT NULL DEFAULT 'PENDING' COMMENT '결제 상태',
     is_ledger_completed     BOOLEAN        NOT NULL DEFAULT FALSE COMMENT '원장 생성 완료 여부',
     is_settlement_completed BOOLEAN        NOT NULL DEFAULT FALSE COMMENT '정산 완료 여부',
+    created_at              DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
+    updated_at              DATETIME DEFAULT CURRENT_TIMESTAMP COMMENT '수정 일시',
     FOREIGN KEY (payment_id) REFERENCES payment (id)
 ) engine = InnoDB;
 
@@ -33,6 +37,7 @@ CREATE TABLE payment_item_history
     previous_status  ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FAILED', 'UNKNOWN_APPROVE') COMMENT '이전 결제 상태',
     new_status       ENUM ('PENDING', 'PROCESSING', 'SUCCESS', 'FAILED', 'UNKNOWN_APPROVE') COMMENT '신규 결제 상태',
     reason           VARCHAR(255) COMMENT '결제 사유',
+    created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
     FOREIGN KEY (payment_item_id) REFERENCES payment_item (id)
 ) engine = InnoDB;
 
@@ -42,5 +47,6 @@ CREATE TABLE benefit
     payment_id      BIGINT         NOT NULL COMMENT '결제 ID',
     coupon_id       VARCHAR(255) UNIQUE COMMENT '쿠폰 ID',
     discount_amount DECIMAL(20, 2) NOT NULL COMMENT '할인 적용 금액',
+    created_at          DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성 일시',
     FOREIGN KEY (payment_id) REFERENCES payment (id)
 ) engine = InnoDB;

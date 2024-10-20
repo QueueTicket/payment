@@ -2,6 +2,7 @@ package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import com.qticket.payment.domain.payment.PaymentStatus;
 import com.qticket.payment.exception.persistence.AlreadyTerminatedPayment;
+import com.qticket.payment.global.jpa.Auditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -22,7 +23,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "payment_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class PaymentItemJpaEntity {
+public class PaymentItemJpaEntity extends Auditable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
