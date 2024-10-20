@@ -10,15 +10,11 @@ import org.springframework.test.context.TestPropertySource;
 @TestPropertySource(properties = "wiremock.base.url=http://localhost:${wiremock.server.port}")
 public class InternalFeignMockUrlConfig {
 
-//    @Value("${wiremock.server.port}")
-//    int port;
-
     @Value("${wiremock.base.url}")
     String endpoint;
 
     @Bean
     public RequestInterceptor requestInterceptor() {
-//        return requestTemplate -> requestTemplate.target("http://localhost:" + port);
         return requestTemplate -> requestTemplate.target(endpoint);
     }
 

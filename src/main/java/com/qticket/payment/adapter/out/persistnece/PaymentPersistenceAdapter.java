@@ -25,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-// TODO List 처리 -> 일급 컬렉션으로 이관
 @Repository
 @Transactional
 @RequiredArgsConstructor

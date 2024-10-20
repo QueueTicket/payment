@@ -6,8 +6,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import lombok.Builder;
 
-// TODO 정산을 위한 판매자 정보 추가 : sellerId
-// TODO 일급 컬렉션으로 도메인 로직 이관
 @Builder
 public record PaymentItem(
     Long id,
