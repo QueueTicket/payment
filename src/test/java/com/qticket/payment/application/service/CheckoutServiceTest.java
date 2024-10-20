@@ -31,7 +31,7 @@ class CheckoutServiceTest extends PaymentTestHelper {
 
         assertThat(actual.amount()).isEqualTo(new BigDecimal(120_000));
         assertFalse(paymentEvent.isCompleted());
-        assertThat(paymentEvent.getPaymentItems())
+        assertThat(paymentEvent.getPaymentItemElements())
             .allMatch(order -> !order.isLedgerCompleted() && !order.isSettlementCompleted());
     }
 

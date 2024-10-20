@@ -13,6 +13,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.AccessLevel;
@@ -29,7 +30,7 @@ public class PaymentJpaEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private PaymentItemCollection paymentItems;
+    private PaymentItemJpaEntities paymentItems;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)
     private BenefitJpaEntity benefit;
@@ -46,7 +47,7 @@ public class PaymentJpaEntity {
     private LocalDateTime approvedAt;
 
     private PaymentJpaEntity(
-        PaymentItemCollection paymentItems,
+        PaymentItemJpaEntities paymentItems,
         BenefitJpaEntity benefit,
         Long customerId,
         String orderId,
@@ -77,7 +78,7 @@ public class PaymentJpaEntity {
         BenefitJpaEntity benefitEntity = (benefit != null) ? benefit.toEntity() : null;
 
         return new PaymentJpaEntity(
-            PaymentItemCollection.of(paymentItems),
+            PaymentItemJpaEntities.of(paymentItems),
             benefitEntity,
             customerId,
             orderId,
@@ -86,7 +87,7 @@ public class PaymentJpaEntity {
         );
     }
 
-    public List<PaymentItemJpaEntity> extractChangeableProcessingOrders() {
+    public PaymentItemJpaEntities extractChangeableProcessingOrders() {
         return paymentItems.extractChangeableProcessingOrders();
     }
 
@@ -109,8 +110,12 @@ public class PaymentJpaEntity {
         this.isBenefitApplied = true;
     }
 
-    public List<PaymentItemJpaEntity> getPaymentItems() {
+    public List<PaymentItemJpaEntity> getPaymentItemElements() {
         return paymentItems.getElements();
+    }
+
+    public BigDecimal totalAmount() {
+        return paymentItems.totalAmount();
     }
 
 }

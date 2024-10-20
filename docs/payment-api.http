@@ -1,7 +1,7 @@
 # @name 결제 요청
 GET http://localhost:8080/checkout
-    ?customerId=33
-    &couponId=new-coupon33
+    ?customerId=41
+    &couponId=new-coupon41
     &concertId=concert-a
     &seatIds=1
 Content-Type: application/json
@@ -9,7 +9,7 @@ Content-Type: application/json
 ###
 # @name 쿠폰 없는 결제 요청
 GET http://localhost:8080/checkout
-    ?customerId=34
+    ?customerId=42
     &concertId=concert-a
     &seatIds=1
 Content-Type: application/json

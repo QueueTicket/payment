@@ -4,7 +4,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.mockito.BDDMockito.given;
 
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentItemJpaEntity;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentJpaEntity;
 import com.qticket.payment.adapter.out.web.external.payment.toss.response.confirm.Failure;
 import com.qticket.payment.application.port.in.CheckoutUseCase;
@@ -78,17 +77,15 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
         PaymentJpaEntity paymentEvent = paymentJpaRepository.findByOrderId(orderId);
 
         // Then
-        BigDecimal totalAmount = paymentEvent.getPaymentItems().stream()
-            .map(PaymentItemJpaEntity::getAmount)
-            .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal totalAmount = paymentEvent.totalAmount();
 
         assertAll(
             () -> assertThat(actual.paymentStatus()).isEqualTo(PaymentStatus.SUCCESS),
             () -> assertThat(totalAmount).isEqualByComparingTo(checkout.amount()),
             () -> assertThat(paymentEvent.getMethod()).isEqualTo(PaymentMethod.EASY_PAY),
-            () -> assertThat(paymentEvent.getPaymentItems())
+            () -> assertThat(paymentEvent.getPaymentItemElements())
                 .allMatch(order -> !order.isLedgerCompleted() && !order.isSettlementCompleted()),
-            () -> assertThat(paymentEvent.getPaymentItems())
+            () -> assertThat(paymentEvent.getPaymentItemElements())
                 .allMatch(it -> it.getStatus() == PaymentStatus.SUCCESS)
         );
     }
@@ -123,7 +120,7 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
         // Then
         assertAll(
             () -> assertThat(actual.paymentStatus()).isEqualTo(PaymentStatus.FAILED),
-            () -> assertThat(paymentEvent.getPaymentItems())
+            () -> assertThat(paymentEvent.getPaymentItemElements())
                 .allMatch(it -> it.getStatus() == PaymentStatus.FAILED)
         );
     }

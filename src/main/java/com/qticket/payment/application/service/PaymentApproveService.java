@@ -22,8 +22,8 @@ public class PaymentApproveService implements PaymentApproveUseCase {
 
     @Override
     public Mono<PaymentApproveResult> approve(PaymentApproveCommand command) {
-        paymentStatusUpdatePort.updateStatusToProcessing(command.orderId(), command.paymentKey());
-        paymentValidationPort.isValidPaymentAmount(command.orderId(), command.amount());
+        paymentStatusUpdatePort.updatePaymentStatusToApproveProcessing(command.orderId(), command.paymentKey());
+        paymentValidationPort.validateApprovalPaymentAmount(command.orderId(), command.amount());
 
         PaymentExecutionResult result = paymentExecutionPort.execute(command).block();
         paymentStatusUpdatePort.updatePaymentStatus(

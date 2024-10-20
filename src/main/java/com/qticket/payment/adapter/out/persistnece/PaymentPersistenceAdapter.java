@@ -8,7 +8,7 @@ import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentItemHis
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentItemJpaRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.PaymentJpaRepository;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentItemHistoryJpaEntity;
-import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentItemJpaEntity;
+import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentItemJpaEntities;
 import com.qticket.payment.adapter.out.persistnece.repository.jpa.entity.PaymentJpaEntity;
 import com.qticket.payment.application.port.out.AppliedBenefitPort;
 import com.qticket.payment.application.port.out.PaymentStatusUpdatePort;
@@ -25,6 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+// TODO List 처리 -> 일급 컬렉션으로 이관
 @Repository
 @Transactional
 @RequiredArgsConstructor
@@ -41,50 +42,47 @@ public class PaymentPersistenceAdapter implements
     }
 
     @Override
-    public void updateStatusToProcessing(String orderId, String paymentKey) {
+    public void updatePaymentStatusToApproveProcessing(String orderId, String paymentKey) {
         PaymentJpaEntity paymentEvent = paymentJpaRepository.findByOrderId(orderId);
-        List<PaymentItemJpaEntity> paymentItems = paymentEvent.extractChangeableProcessingOrders();
+        PaymentItemJpaEntities paymentItems = paymentEvent.extractChangeableProcessingOrders();
 
-        checkIsChangeableInProcessingPaymentItem(paymentItems);
+        checkIsChangeableInPaymentProcessing(paymentItems);
         registerPaymentKey(paymentEvent, paymentKey);
         updatePaymentStatus(paymentItems, PaymentStatus.PROCESSING, PAYMENT_APPROVE_STARTED.getDescription());
+    }
+
+    private void checkIsChangeableInPaymentProcessing(PaymentItemJpaEntities paymentItems) {
+        paymentItems.checkIsChangeableInProcessing();
     }
 
     private void registerPaymentKey(PaymentJpaEntity paymentEvent, String paymentKey) {
         paymentEvent.registerPaymentKey(paymentKey);
     }
 
-    private void checkIsChangeableInProcessingPaymentItem(List<PaymentItemJpaEntity> paymentItems) {
-        paymentItems.forEach(PaymentItemJpaEntity::checkIsChangeableInProcessing);
+    public void updatePaymentStatus(PaymentItemJpaEntities paymentItems, PaymentStatus newStatus, String reason) {
+        savePaymentStatusChangeHistory(paymentItems, newStatus, reason);
+        paymentItems.updateStatus(newStatus);
     }
 
-    public void saveChangePaymentStatusHistory(
-        List<PaymentItemJpaEntity> paymentItems,
+    public void savePaymentStatusChangeHistory(
+        PaymentItemJpaEntities paymentItems,
         PaymentStatus updatedStatus,
         String reason
     ) {
-        List<PaymentItemHistoryJpaEntity> histories = paymentItems.stream()
-            .map(it -> PaymentItemHistoryJpaEntity.of(it, updatedStatus, reason))
-            .toList();
-
+        List<PaymentItemHistoryJpaEntity> histories = paymentItems.toHistories(updatedStatus, reason);
         paymentItemHistoryJpaRepository.saveAll(histories);
     }
 
-    public void updatePaymentStatus(List<PaymentItemJpaEntity> paymentItems, PaymentStatus newStatus, String reason) {
-        saveChangePaymentStatusHistory(paymentItems, newStatus, reason);
-        paymentItems.forEach(it -> it.updateStatus(newStatus));
-    }
-
     @Override
-    public void isValidPaymentAmount(String orderId, Long amount) {
-        BigDecimal totalAmount = paymentItemJpaRepository.findPaymentAmount(orderId);
-        if (isTotalAmountNotMatched(amount, totalAmount)) {
-            throw new InValidAmountException(orderId, amount, totalAmount);
+    public void validateApprovalPaymentAmount(String orderId, Long approvedAmount) {
+        BigDecimal paymentAmount = paymentItemJpaRepository.findPaymentAmount(orderId);
+        if (isPaymentAmountNotMatched(approvedAmount, paymentAmount)) {
+            throw new InValidAmountException(orderId, approvedAmount, paymentAmount);
         }
     }
 
-    private boolean isTotalAmountNotMatched(Long amount, BigDecimal totalAmount) {
-        return totalAmount.compareTo(BigDecimal.valueOf(amount)) != 0;
+    private boolean isPaymentAmountNotMatched(Long approvedAmount, BigDecimal paymentAmount) {
+        return paymentAmount.compareTo(BigDecimal.valueOf(approvedAmount)) != 0;
     }
 
     @Override
@@ -107,26 +105,35 @@ public class PaymentPersistenceAdapter implements
         PaymentJpaEntity paymentEvent,
         PaymentStatusUpdateCommand command
     ) {
-        List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
         paymentEvent.updatePaymentDetails(command.getApproveDetails());
-        updatePaymentStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_SUCCESS.getDescription());
+        updatePaymentStatus(
+            paymentEvent.getPaymentItems(),
+            command.getStatus(),
+            PAYMENT_APPROVE_SUCCESS.getDescription()
+        );
     }
 
     private void updatePaymentStatusToFailed(
         PaymentJpaEntity paymentEvent,
         PaymentStatusUpdateCommand command
     ) {
-        List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
         paymentEvent.updatePaymentFailCount();
-        updatePaymentStatus(paymentItems, command.getStatus(), command.getFailure().message());
+        updatePaymentStatus(
+            paymentEvent.getPaymentItems(),
+            command.getStatus(),
+            command.getFailure().message()
+        );
     }
 
     private void updatePaymentStatusToUnknown(
         PaymentJpaEntity paymentEvent,
         PaymentStatusUpdateCommand command
     ) {
-        List<PaymentItemJpaEntity> paymentItems = paymentEvent.getPaymentItems();
-        updatePaymentStatus(paymentItems, command.getStatus(), PAYMENT_APPROVE_UNKNOWN.getDescription());
+        updatePaymentStatus(
+            paymentEvent.getPaymentItems(),
+            command.getStatus(),
+            PAYMENT_APPROVE_UNKNOWN.getDescription()
+        );
     }
 
     @Override

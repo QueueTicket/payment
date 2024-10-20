@@ -16,7 +16,7 @@ class PaymentItemJpaRepositoryTest extends PaymentRepositoryTestHelper {
         PaymentJpaEntity paymentJpaEntity = paymentEvent.toEntity();
         paymentJpaEntity.applyBenefit();
         paymentJpaRepository.save(paymentJpaEntity);
-        paymentItemJpaRepository.saveAll(paymentJpaEntity.getPaymentItems());
+//        paymentItemJpaRepository.saveAll(paymentJpaEntity.getPaymentItems());
 
         // Then
         BigDecimal paymentAmount = paymentItemJpaRepository.findPaymentAmount(paymentEvent.orderId());
@@ -31,7 +31,7 @@ class PaymentItemJpaRepositoryTest extends PaymentRepositoryTestHelper {
         // When
         PaymentJpaEntity paymentJpaEntity = paymentEvent.toEntity();
         paymentJpaRepository.save(paymentJpaEntity);
-        paymentItemJpaRepository.saveAll(paymentJpaEntity.getPaymentItems());
+//        paymentItemJpaRepository.saveAll(paymentJpaEntity.getPaymentItems());
 
         // Then
         BigDecimal paymentAmount = paymentItemJpaRepository.findPaymentAmount(paymentEvent.orderId());
