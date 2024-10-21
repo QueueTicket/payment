@@ -14,11 +14,11 @@ public record PaymentApproveResult(
         PaymentExecutionResult result
     ) {
         String message = createMessageByStatus(result);
-        return new PaymentApproveResult(result.getpaymentStatus(), result.getFailure(), message);
+        return new PaymentApproveResult(result.getStatus(), result.getFailure(), message);
     }
 
     private static String createMessageByStatus(PaymentExecutionResult result) {
-        return switch (result.getpaymentStatus()) {
+        return switch (result.getStatus()) {
             case SUCCESS -> "결제에 성공하였습니다.";
             case FAILED -> "결제에 실패하였습니다.";
             case UNKNOWN_APPROVE -> "결제 중 알 수 없는 오류가 발생하였습니다.";
@@ -26,7 +26,7 @@ public record PaymentApproveResult(
             default -> throw new InValidPaymentStatusException(
                 result.getPaymentKey(),
                 result.getOrderId(),
-                result.getpaymentStatus()
+                result.getStatus()
             );
         };
     }

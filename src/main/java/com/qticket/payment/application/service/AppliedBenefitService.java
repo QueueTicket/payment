@@ -13,7 +13,7 @@ public class AppliedBenefitService implements AppliedBenefitUseCase {
 
     @Override
     public void appliedBenefit(String orderId) {
-        appliedBenefitPort.updateBenefitApplied(orderId);
+        appliedBenefitPort.updateBenefitApplied(orderId).subscribe();
     }
 
 }

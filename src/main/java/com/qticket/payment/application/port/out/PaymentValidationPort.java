@@ -1,7 +1,9 @@
 package com.qticket.payment.application.port.out;
 
+import reactor.core.publisher.Mono;
+
 public interface PaymentValidationPort {
 
-    void validateApprovalPaymentAmount(String orderId, Long amount);
+    Mono<Void> validateApprovalAmount(String orderId, Long amount);
 
 }

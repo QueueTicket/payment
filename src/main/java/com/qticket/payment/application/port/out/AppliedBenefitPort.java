@@ -1,7 +1,9 @@
 package com.qticket.payment.application.port.out;
 
+import reactor.core.publisher.Mono;
+
 public interface AppliedBenefitPort {
 
-    void updateBenefitApplied(String orderId);
+    Mono<Void> updateBenefitApplied(String orderId);
 
 }

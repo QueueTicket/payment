@@ -18,7 +18,7 @@ import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.domain.payment.PaymentStatus;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -44,31 +44,33 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
         this.paymentConfirmService = paymentApproveService;
     }
 
-    @Test
-    @DisplayName("쿠폰 적용 시 결제 승인 성공")
-    void paymentApproveSuccess() {
-        // Given
-        CheckoutResult checkout = checkoutUseCase.checkout(checkoutCommand);
-        String paymentKey = UUID.randomUUID().toString();
-        PaymentApproveCommand given = new PaymentApproveCommand(
+    private CheckoutResult checkout;
+    private PaymentApproveCommand given;
+
+    @BeforeEach
+    void setUp() {
+        checkout = checkoutUseCase.checkout(checkoutCommand);
+        given = new PaymentApproveCommand(
             paymentKey,
             orderId,
             checkout.actualPaymentAmount().longValue()
         );
+    }
 
-        LocalDateTime approvedAt = LocalDateTime.now();
-        PaymentExecutionResult result = PaymentExecutionResult.of(
-            paymentKey,
-            orderId,
-            ApprovalStatus.DONE,
-            new ApproveDetails(
+    @Test
+    @DisplayName("쿠폰 적용 시 결제 승인 성공")
+    void paymentApproveSuccess() {
+        // Given
+        PaymentExecutionResult result = PaymentExecutionResult.builder()
+            .paymentKey(paymentKey)
+            .orderId(orderId)
+            .status(ApprovalStatus.DONE.toPaymentStatus())
+            .confirmDetails(new ApproveDetails(
                 checkout.orderName(),
                 checkout.amount(),
                 PaymentMethod.EASY_PAY,
-                approvedAt
-            ),
-            null
-        );
+                LocalDateTime.now()
+            )).build();
         given(paymentExecutionPort.execute(given)).willReturn(Mono.just(result));
         appliedBenefitService.appliedBenefit(orderId);
 
@@ -94,21 +96,13 @@ class PaymentApproveServiceTest extends PaymentTestHelper {
     @DisplayName("결제 승인 실패")
     void paymentApproveFailed() {
         // Given
-        CheckoutResult checkout = checkoutUseCase.checkout(checkoutCommand);
-        String paymentKey = UUID.randomUUID().toString();
-        PaymentApproveCommand given = new PaymentApproveCommand(
-            paymentKey,
-            orderId,
-            checkout.actualPaymentAmount().longValue()
-        );
+        PaymentExecutionResult result = PaymentExecutionResult.builder()
+            .paymentKey(paymentKey)
+            .orderId(orderId)
+            .status(ApprovalStatus.ABORTED.toPaymentStatus())
+            .failure(new Failure("E0001", "잔액 부족"))
+            .build();
 
-        PaymentExecutionResult result = PaymentExecutionResult.of(
-            paymentKey,
-            orderId,
-            ApprovalStatus.ABORTED,
-            null,
-            new Failure("E0001", "잔액 부족")
-        );
         given(paymentExecutionPort.execute(given)).willReturn(Mono.just(result));
         appliedBenefitService.appliedBenefit(orderId);
 

@@ -39,10 +39,19 @@ public class PaymentStatusUpdateCommand {
         return new PaymentStatusUpdateCommand(
             result.getPaymentKey(),
             result.getOrderId(),
-            result.getpaymentStatus(),
+            result.getStatus(),
             result.getConfirmDetails(),
             result.getFailure()
         );
+    }
+
+    public static PaymentStatusUpdateCommand ofError(
+        String paymentKey,
+        String orderId,
+        PaymentStatus status,
+        Failure failure
+    ) {
+        return new PaymentStatusUpdateCommand(paymentKey, orderId, status, null, failure);
     }
 
     private void validateDetailsByStatus() {

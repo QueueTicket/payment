@@ -6,6 +6,7 @@ import com.qticket.payment.domain.payment.PaymentItem;
 import com.qticket.payment.domain.payment.PaymentMethod;
 import com.qticket.payment.global.jpa.Auditable;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -31,6 +32,7 @@ public class PaymentJpaEntity extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Embedded
     private PaymentItemJpaEntities paymentItems;
 
     @OneToOne(mappedBy = "payment", cascade = CascadeType.PERSIST)

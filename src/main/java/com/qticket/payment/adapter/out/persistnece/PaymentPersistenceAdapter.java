@@ -24,9 +24,10 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import reactor.core.publisher.Mono;
 
 @Repository
-@Transactional
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class PaymentPersistenceAdapter implements
     SavePaymentPort, PaymentStatusUpdatePort, PaymentValidationPort, AppliedBenefitPort {
@@ -36,26 +37,26 @@ public class PaymentPersistenceAdapter implements
     private final PaymentItemHistoryJpaRepository paymentItemHistoryJpaRepository;
 
     @Override
+    @Transactional
     public void save(PaymentEvent paymentEvent) {
         paymentJpaRepository.save(paymentEvent.toEntity());
     }
 
     @Override
-    public void updatePaymentStatusToApproveProcessing(String orderId, String paymentKey) {
+    @Transactional
+    public Mono<Void> updatePaymentStatusToApproveProcessing(String orderId, String paymentKey) {
         PaymentJpaEntity paymentEvent = paymentJpaRepository.findByOrderId(orderId);
         PaymentItemJpaEntities paymentItems = paymentEvent.extractChangeableProcessingOrders();
 
         checkIsChangeableInPaymentProcessing(paymentItems);
-        registerPaymentKey(paymentEvent, paymentKey);
+        paymentEvent.registerPaymentKey(paymentKey);
         updatePaymentStatus(paymentItems, PaymentStatus.PROCESSING, PAYMENT_APPROVE_STARTED.getDescription());
+
+        return Mono.defer(Mono::empty).then();
     }
 
     private void checkIsChangeableInPaymentProcessing(PaymentItemJpaEntities paymentItems) {
         paymentItems.checkIsChangeableInProcessing();
-    }
-
-    private void registerPaymentKey(PaymentJpaEntity paymentEvent, String paymentKey) {
-        paymentEvent.registerPaymentKey(paymentKey);
     }
 
     public void updatePaymentStatus(PaymentItemJpaEntities paymentItems, PaymentStatus newStatus, String reason) {
@@ -73,11 +74,13 @@ public class PaymentPersistenceAdapter implements
     }
 
     @Override
-    public void validateApprovalPaymentAmount(String orderId, Long approvedAmount) {
-        BigDecimal paymentAmount = paymentItemJpaRepository.findPaymentAmount(orderId);
-        if (isPaymentAmountNotMatched(approvedAmount, paymentAmount)) {
-            throw new InValidAmountException(orderId, approvedAmount, paymentAmount);
-        }
+    public Mono<Void> validateApprovalAmount(String orderId, Long approvedAmount) {
+        return Mono.fromRunnable(() -> {
+            BigDecimal paymentAmount = paymentItemJpaRepository.findPaymentAmount(orderId);
+            if (isPaymentAmountNotMatched(approvedAmount, paymentAmount)) {
+                throw new InValidAmountException(orderId, approvedAmount, paymentAmount);
+            }
+        });
     }
 
     private boolean isPaymentAmountNotMatched(Long approvedAmount, BigDecimal paymentAmount) {
@@ -85,9 +88,9 @@ public class PaymentPersistenceAdapter implements
     }
 
     @Override
-    public void updatePaymentStatus(PaymentStatusUpdateCommand command) {
+    @Transactional
+    public Mono<Void> updatePaymentStatus(PaymentStatusUpdateCommand command) {
         PaymentJpaEntity paymentEvent = paymentJpaRepository.findByOrderId(command.getOrderId());
-
         switch (command.getStatus()) {
             case SUCCESS -> updatePaymentStatusToSuccess(paymentEvent, command);
             case FAILED -> updatePaymentStatusToFailed(paymentEvent, command);
@@ -98,6 +101,7 @@ public class PaymentPersistenceAdapter implements
                 command.getStatus()
             );
         }
+        return Mono.defer(Mono::empty).then();
     }
 
     public void updatePaymentStatusToSuccess(
@@ -136,9 +140,11 @@ public class PaymentPersistenceAdapter implements
     }
 
     @Override
-    public void updateBenefitApplied(String orderId) {
+    @Transactional
+    public Mono<Void> updateBenefitApplied(String orderId) {
         PaymentJpaEntity payment = paymentJpaRepository.findByOrderId(orderId);
         payment.applyBenefit();
+        return Mono.defer(Mono::empty).then();
     }
 
 }

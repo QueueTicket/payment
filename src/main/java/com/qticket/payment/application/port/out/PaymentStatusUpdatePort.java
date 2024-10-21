@@ -1,11 +1,12 @@
 package com.qticket.payment.application.port.out;
 
 import com.qticket.payment.application.port.out.command.PaymentStatusUpdateCommand;
+import reactor.core.publisher.Mono;
 
 public interface PaymentStatusUpdatePort {
 
-    void updatePaymentStatusToApproveProcessing(String orderId, String paymentKey);
+    Mono<Void> updatePaymentStatusToApproveProcessing(String orderId, String paymentKey);
 
-    void updatePaymentStatus(PaymentStatusUpdateCommand command);
+    Mono<Void> updatePaymentStatus(PaymentStatusUpdateCommand command);
 
 }

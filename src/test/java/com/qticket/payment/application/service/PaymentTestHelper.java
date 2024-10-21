@@ -16,6 +16,7 @@ import org.springframework.context.annotation.Import;
 @Import(P6spySqlFormatConfig.class)
 public class PaymentTestHelper extends SpringBootTestBase {
 
+    protected final String paymentKey = UUID.randomUUID().toString();
     protected final String orderId = UUID.randomUUID().toString();
     protected final CheckoutCommand checkoutCommand = new CheckoutCommand(
         1L,

@@ -102,18 +102,18 @@ public class TossPaymentExecutor implements PaymentExecutor {
     }
 
     private PaymentExecutionResult mapTo(TossPaymentConfirmResponse response) {
-        return PaymentExecutionResult.of(
-            response.paymentKey(),
-            response.orderId(),
-            ApprovalStatus.valueOf(response.status()),
-            new ApproveDetails(
+        return PaymentExecutionResult.builder()
+            .paymentKey(response.paymentKey())
+            .orderId(response.orderId())
+            .status(ApprovalStatus.valueOf(response.status()).toPaymentStatus())
+            .confirmDetails(new ApproveDetails(
                 response.orderName(),
                 BigDecimal.valueOf(response.totalAmount()),
                 PaymentMethod.valueOfDescription(response.method()),
                 LocalDateTime.parse(response.approvedAt(), DateTimeFormatter.ISO_OFFSET_DATE_TIME)
-            ),
-            response.failure()
-        );
+            ))
+            .failure(response.failure())
+            .build();
     }
 
     private static boolean isRetryableThrows(Throwable throwable) {
