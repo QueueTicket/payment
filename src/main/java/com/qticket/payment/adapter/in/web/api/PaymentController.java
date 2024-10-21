@@ -4,11 +4,8 @@ import com.qticket.payment.adapter.in.web.api.request.TossPaymentConfirmRequest;
 import com.qticket.payment.application.port.in.AppliedBenefitUseCase;
 import com.qticket.payment.application.port.in.PaymentApproveUseCase;
 import com.qticket.payment.domain.approve.PaymentApproveResult;
-import com.qticket.payment.exception.persistence.InValidAmountException;
-import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -35,11 +32,6 @@ public class PaymentController {
     ResponseEntity<Void> appliedBenefit(@PathVariable String orderId) {
         appliedBenefitUseCase.appliedBenefit(orderId);
         return ResponseEntity.accepted().build();
-    }
-
-    @GetMapping("/test")
-    ResponseEntity<Void> exceptionTest() {
-        throw new InValidAmountException("order-id", 100_000L, BigDecimal.valueOf(120_000));
     }
 
 }
