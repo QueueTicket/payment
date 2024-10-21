@@ -19,9 +19,9 @@ public class RequestLogFilter {
 
     public static ExchangeFilterFunction logRequestFilter() {
         return ExchangeFilterFunction.ofRequestProcessor(clientRequest -> {
-            log.debug("========== REQUEST ==========");
-            log.debug("{} {}", clientRequest.method(), clientRequest.url());
-            log.debug("Header : {}", clientRequest.headers());
+            log.info("========== REQUEST ==========");
+            log.info("{} {}", clientRequest.method(), clientRequest.url());
+            log.info("Header : {}", clientRequest.headers());
             return Mono.just(clientRequest);
         });
     }
