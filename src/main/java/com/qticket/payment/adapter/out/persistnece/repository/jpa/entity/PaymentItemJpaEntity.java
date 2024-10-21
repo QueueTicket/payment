@@ -1,7 +1,7 @@
 package com.qticket.payment.adapter.out.persistnece.repository.jpa.entity;
 
 import com.qticket.payment.domain.payment.PaymentStatus;
-import com.qticket.payment.exception.persistence.AlreadyTerminatedPayment;
+import com.qticket.payment.exception.adapter.persistence.AlreadyTerminatedPayment;
 import com.qticket.payment.global.jpa.Auditable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
