@@ -27,7 +27,7 @@ public class TossPaymentsWebClientConfig {
     public WebClient tossPaymentsWebClient() {
         String basicHeader = toBasicHeaderWithoutPasswordFromSecretKey(tossPaymentsProperties.secretKey());
         return baseWebClientConfig.webClient().mutate()
-            .baseUrl(tossPaymentsProperties.endpoint())
+            .baseUrl(tossPaymentsProperties.baseUrl())
             .defaultHeader(HttpHeaders.AUTHORIZATION, basicHeader)
             .clientConnector(reactorClientHttpConnector())
             .build();

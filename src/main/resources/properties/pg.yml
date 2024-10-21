@@ -1,6 +1,6 @@
 pg:
   toss:
     secret-key: test_gsk_docs_OaPz8L5KdmQXkzRz3y47BMw6
-    endpoint: https://api.tosspayments.com
-
+    base-url: https://api.tosspayments.com
+    confirm-endpoint: /v1/payments/confirm
 ---

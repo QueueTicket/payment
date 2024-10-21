@@ -11,7 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Mono;
 
 @DisplayName("Adapter:Out:Web:External:Payment:Toss")
-@TestPropertySource(properties = "pg.toss.endpoint=http://localhost:${wiremock.server.port}")
+@TestPropertySource(properties = "pg.toss.base-url=http://localhost:${wiremock.server.port}")
 class TossPaymentExecutorTest extends WiremockTestBase {
 
     private final PaymentExecutor paymentExecutor;
