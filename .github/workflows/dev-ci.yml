@@ -24,6 +24,9 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: grant execute permission to gradlew
+        run: chmod +x ./gradlew
+
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
