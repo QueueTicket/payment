@@ -1,5 +1,5 @@
 spring:
-  config.activate.on-profile: test
+  config.activate.on-profile: test, dev
   datasource:
     hikari.jdbc-url: jdbc:h2:mem:test_db;MODE=MySQL;
     username: sa
@@ -13,11 +13,5 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: qticket
     password: qticket
+
 ---
-spring:
-  config.activate.on-profile: dev
-  datasource:
-    url: jdbc:mysql://docker.host.internal:3306/payment?useUnicode=yes&characterEncoding=UTF-8&rewriteBatchedStatements=true
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    username: qticket
-    password: qticket

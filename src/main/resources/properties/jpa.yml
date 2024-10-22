@@ -10,7 +10,7 @@ spring:
         highlight_sql: false
 ---
 spring:
-  config.activate.on-profile: local
+  config.activate.on-profile: local, dev
   jpa:
     properties:
       hibernate:
