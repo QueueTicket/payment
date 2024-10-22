@@ -1,5 +1,5 @@
 spring:
-  config.activate.on-profile: local, test
+  config.activate.on-profile: local, test, dev
   cloud:
     discovery:
       enabled: false
@@ -8,14 +8,14 @@ spring:
       allow-override: false
 ---
 spring:
-  config.activate.on-profile: dev
+  config.activate.on-profile: prd
 
 eureka:
   client:
     fetch-registry: true
     register-with-eureka: true
     service-url:
-      defaultZone: http://host.docker.internal:19090/eureka/
+      defaultZone: http://eureka-app:19090/eureka/
 
   instance:
     prefer-ip-address: true

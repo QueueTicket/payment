@@ -1,5 +1,5 @@
 spring:
-  config.activate.on-profile: local
+  config.activate.on-profile: local, dev
 logging:
   level:
     org:

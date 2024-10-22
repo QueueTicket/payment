@@ -13,4 +13,4 @@ spring:
       - classpath:properties/feature-flag.yml
       - classpath:properties/logging.yml
   profiles:
-    active: local
+    active: dev

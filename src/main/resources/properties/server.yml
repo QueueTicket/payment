@@ -1,3 +1,6 @@
 spring.config.activate.on-profile: dev
-server.port: 0
+server.port: 8080
 ---
+
+spring.config.activate.on-profile: prd
+server.port: 0
