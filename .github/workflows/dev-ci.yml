@@ -1,7 +1,7 @@
 name: Develop CI
 
 env:
-  MODULE_NAME: payment-app
+  MODULE_NAME: payment
   BUILD_ID: ${{ github.sha }}
   REPOSITORY: ${{ secrets.AWS_ECR_REPOSITORY_NAME }}
 
