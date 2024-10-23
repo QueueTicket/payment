@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentApproveController {
 
     private final PaymentApproveUseCase paymentApproveUseCase;
     private final AppliedBenefitUseCase appliedBenefitUseCase;

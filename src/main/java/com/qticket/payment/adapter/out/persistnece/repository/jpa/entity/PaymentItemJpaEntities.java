@@ -59,4 +59,11 @@ public class PaymentItemJpaEntities {
             .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public String concertId() {
+        return elements.stream()
+            .map(it -> it.getConcertId())
+            .findFirst()
+            .orElseThrow();
+    }
+
 }

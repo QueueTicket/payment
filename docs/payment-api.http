@@ -13,3 +13,10 @@ GET http://localhost:8080/checkout
     &concertId=concert-86
     &seatIds=1
 Content-Type: application/json
+
+###
+
+# @name 결제 조회
+GET http://localhost:8080/789edcfc-f84c-3b2e-86e0-8d1bc6f9045c
+
+###

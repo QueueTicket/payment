@@ -11,7 +11,9 @@ public enum PaymentErrorCode implements ErrorCode {
     ALREADY_TERMINATED_ORDER(HttpStatus.BAD_REQUEST, "이미 종료된 주문 입니다."),
     ALREADY_PAYMENT_STATUS(HttpStatus.BAD_REQUEST, "결제 상태가 올바르지 않습니다."),
     MISSING_APPROVE_DETAILS(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 상세 정보가 누락되었습니다."),
-    PAYMENT_APPROVED_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 지연 오류가 발생하였습니다.");;
+    PAYMENT_APPROVED_TIMEOUT(HttpStatus.INTERNAL_SERVER_ERROR, "결제 승인 지연 오류가 발생하였습니다."),
+    PAYMENT_NOT_EXIST(HttpStatus.NOT_FOUND, "요청에 해당하는 결제 정보가 존재하지 않습니다."),
+    ;
 
     private final HttpStatus status;
     private final String message;

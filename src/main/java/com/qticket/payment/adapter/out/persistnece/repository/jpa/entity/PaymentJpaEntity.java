@@ -121,4 +121,11 @@ public class PaymentJpaEntity extends Auditable {
         return paymentItems.totalAmount();
     }
 
+    public BigDecimal paymentAmount() {
+        if (isBenefitApplied) {
+            return paymentItems.totalAmount().subtract(benefit.getDiscountAmount());
+        }
+        return paymentItems.totalAmount();
+    }
+
 }

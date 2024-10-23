@@ -39,7 +39,7 @@ public class PaymentItemJpaEntity extends Auditable {
     private String orderId;
     private String concertId;
     private String seatId;
-    private BigDecimal amount;
+    private BigDecimal amount; // todo price
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
     private final boolean isLedgerCompleted = false;
